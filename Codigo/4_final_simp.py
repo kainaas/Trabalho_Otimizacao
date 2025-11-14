@@ -18,6 +18,7 @@ import osmnx as ox
 import pickle
 import time
 import pandas as pd
+from os import path
 
 def calcular_distancias(G):
     """
@@ -27,7 +28,7 @@ def calcular_distancias(G):
     G_undirected = G.to_undirected()
     print("Iniciando cálculo da matriz de distâncias (pode levar vários minutos)...")
     start_time = time.time()
-    distancias = dict(nx.floyd_warshall(G_undirected, weight='length'))
+    distancias = dict(nx.all_pairs_dijkstra_path_length(G_undirected, weight='length'))
     end_time = time.time()
     print(f"Matriz de distâncias calculada em {end_time - start_time:.2f} segundos.")
     return distancias
@@ -72,6 +73,38 @@ def resolver_otimizacao_simplificada(nos_populacao, populacoes, distancias, n_ho
     else:
         return None
 
+
+def exportar_resultados_csv(G, resultados):
+    """
+    Exporta os resultados da otimização para um arquivo CSV.
+    """
+    print("\nExportando resultados para arquivo CSV...")
+    
+    # Prepara os dados para o DataFrame
+    dados_para_csv = []
+    for node_id, probabilidade in resultados.items():
+        dados_no = G.nodes[node_id]
+        dados_para_csv.append({
+            'ID do Cruzamento': node_id,
+            'Posicao_X': dados_no.get('x'),
+            'Posicao_Y': dados_no.get('y'),
+            'Probabilidade': probabilidade
+        })
+        
+    # Cria o DataFrame com o pandas
+    df_resultados = pd.DataFrame(dados_para_csv)
+    
+    # Ordena o DataFrame pela probabilidade, da maior para a menor
+    df_resultados = df_resultados.sort_values(by='Probabilidade', ascending=False)
+    
+    # Salva em um arquivo CSV
+    nome_arquivo_saida = path.join('Arquivos','resultados_probabilidades.csv')
+    df_resultados.to_csv(nome_arquivo_saida, index=False, sep=';', decimal=',')
+    
+    print(f"✅ Resultados exportados com sucesso para '{nome_arquivo_saida}'")
+
+
+
 def visualizar_resultados_simplificados(G_completo, nos_populacao, populacoes, resultados, n_hospitais):
     """
     Visualiza os resultados, mostrando os centros populacionais e os locais ótimos
@@ -102,13 +135,31 @@ def visualizar_resultados_simplificados(G_completo, nos_populacao, populacoes, r
     plt.legend()
     plt.show()
 
+
+def visualizar_probabilidades(G, resultados, n_hospitais):
+    print("\nGerando visualização do mapa de probabilidades...")
+    # ... (código de visualização sem alterações)
+    pos = {node: (data['x'], data['y']) for node, data in G.nodes(data=True)}
+    locais_candidatos = list(resultados.keys())
+    valores_prob = list(resultados.values())
+    locais_otimos = sorted(resultados, key=resultados.get, reverse=True)[:n_hospitais]
+    fig, ax = plt.subplots(figsize=(15, 15))
+    ox.plot_graph(G, ax=ax, show=False, close=False, node_size=0, edge_color='gray', edge_linewidth=0.5)
+    nodes = nx.draw_networkx_nodes(G, pos=pos, nodelist=locais_candidatos, node_color=valores_prob, cmap='plasma', node_size=30, ax=ax)
+    nx.draw_networkx_nodes(G, pos=pos, nodelist=locais_otimos, node_size=30, ax=ax, edgecolors='black', linewidths=1.5)
+    ax.set_title(f'Mapa de Aptidão (Probabilidade) dos Locais Candidatos', fontsize=16)
+    plt.colorbar(nodes, label='Probabilidade (Aptidão) do Local', shrink=0.7)
+    plt.show()
+
+
+
 # --- Execução Principal ---
 if __name__ == "__main__":
     print("--- Etapa 1: Carregar Dados Reais ---")
     try:
-        G_completo = ox.load_graphml('sao_carlos_grafo_preciso.graphml')
+        G_completo = ox.load_graphml(path.join('Arquivos', 'sao_carlos_grafo_preciso.graphml'))
         # Use o ficheiro de população que preferir (original ou suavizado)
-        with open('populacoes_nos.pkl', 'rb') as f:
+        with open(path.join('Arquivos','populacoes_nos.pkl'), 'rb') as f:
             populacoes_completas = pickle.load(f)
         print("Grafo e populações carregados com sucesso!")
     except FileNotFoundError:
@@ -122,7 +173,7 @@ if __name__ == "__main__":
     print(f"\nProblema simplificado de {len(G_completo.nodes())} para {len(nos_populacao)} nós (centros populacionais).")
     
     # --- PARÂMETROS ---
-    NUMERO_DE_HOSPITAIS = 7
+    NUMERO_DE_HOSPITAIS = 1
 
     # --- PROCESSAMENTO ---
     # O cálculo de distâncias ainda é feito no grafo completo para ser preciso
@@ -133,5 +184,9 @@ if __name__ == "__main__":
 
     # --- ANÁLISE E EXPORTAÇÃO ---
     if resultados:
+        # Mostra o primeiro gráfico (resultados finais)
         visualizar_resultados_simplificados(G_completo, nos_populacao, populacoes_filtradas, resultados, NUMERO_DE_HOSPITAIS)
-        # A exportação para CSV pode ser feita da mesma forma que antes, se desejar.
+        # Mostra o segundo gráfico (análise de probabilidades)
+        visualizar_probabilidades(G_completo, resultados, NUMERO_DE_HOSPITAIS)
+        # Exporta os dados para um arquivo CSV
+        exportar_resultados_csv(G_completo, resultados)
