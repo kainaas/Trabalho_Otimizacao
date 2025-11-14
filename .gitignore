@@ -1,3 +1,6 @@
+#Ignore Cache created by 1_grafo.py
+cache/
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
