@@ -2,6 +2,9 @@
 % 1. Load 'Universal' Toolkit (Project-Agnostic)
 \input{preambulo.tex}
 
+\addbibresource{Otimizacao-bib-relatorio.bib}
+\graphicspath{ {./imagens/} }
+
 
 \titulo{Aplicação do problema da p-mediana na distrubuição de hospitais na cidade de São Carlos - SP}
 \autor{Fabio Kauê Araujo da Silva - 16311045\\
@@ -23,17 +26,57 @@
     % --- CONTENT ---
     \chapter{Introdução}
 
+    Afim de proporcionar um melhor atendimento à população de uma determinada cidade, a um determinado serviço, é crucial que o acesso geográfico seja, em alguma métrica, igualitário entre os indivíduos. Uma dessas formas de se medir esse acesso é através da distância entre os indivíduos e os pontos de atendimento. Assim, o problema da p-mediana $(pMP)$ busca, dado um conjunto de pontos (indivíduos) e um número p, selecionar p pontos (locais de atendimento) de forma a minimizar a soma das distâncias entre cada ponto e o ponto mais próximo selecionado.
+
+    Uma das aplicações do $pMP$ é na localização de hospitais em uma cidade, onde o objetivo é minimizar a distância total que os habitantes da cidade precisam percorrer para chegar ao hospital mais próximo. Neste relatório, exploramos a aplicação do problema da p-mediana na distribuição de hospitais na cidade de São Carlos - SP. Utilizando dados geográficos reais, modelamos o problema como um problema de otimização linear e implementamos uma solução computacional utilizando o método Simplex primal.
+
+
+
+
+
+
     \chapter{Objetivos}
+    O objetivo desse trabalho é comparar a disposição real de hospitais na cidade de São Carlos-SP com resultados obtidos através da aplicação do $pMP$ como um problema de otimização linear, além de sugirir possíveis novas localizações ótimas (no sentido de minimizar distâncias) para a construção desses estabelecimentos na cidade.
+
+
+
+
 
     \chapter{Revisão Bibliográfica}
+
+        \section{Grafos}
+        As seguintes definições são dadas em \cite{AURICHI}:
+
+        \begin{definition} \label{def:grafo}
+            Um \textbf{grafo} é o par $G=(V,E)$ em que $V$ é um conjunto de pontos denotado \textbf{vértices} e $E\subset V^2$ é o conjunto de \textbf{arestas}.
+        \end{definition}
+
+        Informalmente, pode-se definir um grafo como um conjunto de pontos ligados de alguma forma. Um exemplo, que será usado nesse estudo, é a malha viária de uma cidade, na qual as ruas representam as arestas e os pontos são as esquinas. Nesse caso, cada rua tem um tamanho, o que torna o grafo \textbf{ponderado}.
+        
+        \begin{definition} \label{def:caminho}
+            Dizemos que um grafo $G=(V,E)$ não vazio é um \textbf{caminho} se é da forma $V = {x_1, x_2, \dots, x_n}$ e $E = {(x_1,x_2), (x_2,x_3), \dots, (x_{n-1}, x_n)}$
+        \end{definition}
+        
+        As duas definições seguintes serão usadas posteriormente para resultados sobre a possibilidade de transformar o $pMP$ em um problema linear.
+        
+        \begin{definition} \label{def:conexo}
+            Dizemos que um grafo $G=(V,E)$ é \textbf{conexo} se dados dois vértices $u,v \in V$, existe um caminho $A = (P, C)$ tal que $u,v \in P$. 
+        \end{definition}
+        
+        \begin{definition} \label{def:ciclo}
+            Dizemos que um grafo é um \textbf{ciclo} se é um caminho e suas extremidades são iguais.
+        \end{definition}
+
+        
+            \subsection{Algoritmos de distância mínima}
+
         \section{Problema da p-mediana}
 
             \subsection{p-mediana como problema de otimização linear}
 
         \section{Simplex primal}
 
-        \section{Algoritmos de distância mínima}
-
+        
         \section{Interpolação de dados geográficos}
 
     \chapter{Procedimentos e métodos}

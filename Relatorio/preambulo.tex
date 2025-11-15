@@ -8,7 +8,7 @@
 \documentclass[
 	% -- opções da classe memoir --
 	12pt,				% tamanho da fonte
-	openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
+	openany,			% capítulos não pulam folhas
 	twoside,			% para impressão em verso e anverso. Oposto a oneside
 	a4paper,			% tamanho do papel. 
 	% -- opções da classe abntex2 --
@@ -180,11 +180,11 @@
 % 3. APPLY THEOREM STYLES AND DEFINE RESPECTIVE ENVIRONMENTS
 % 3.1. STYLE I - TAUTOLOGIES - FIRST NUMBER, THEN NAME
 \theoremstyle{number-name}
-  \newtheorem{lemma}{\color{lmm}Lema:}[section]
-  \newtheorem{theorem}[lemma]{\color{thm}Teorema:}
-  \newtheorem{proposition}[lemma]{\color{prop}Proposição:}
-  \newtheorem{corollary}[lemma]{\color{crl}Corolário:}
-  \newtheorem{definition}[lemma]{\color{def}Definição:}
+  \newtheorem{lemma}{Lema:}[section]
+  \newtheorem{theorem}[lemma]{Teorema:}
+  \newtheorem{proposition}[lemma]{Proposição:}
+  \newtheorem{corollary}[lemma]{Corolário:}
+  \newtheorem{definition}[lemma]{Definição:}
 
 % 3.2. STYLE II - EXAMPLES & EXERCISES - FIRST NAME, THEN ITALIC NUMBER 
 \theoremstyle{name-it_number}
@@ -194,16 +194,16 @@
 % 3.3. STYLE III - REMARKS, SOLUTIONS & PROOFS - NO NUMBERING
 \theoremstyle{no_number}
   % Remark
-  \newtheorem*{observation*}{\color{obs}Observação:}
+  \newtheorem*{observation*}{Observação:}
   % Solution
-  \newtheorem*{solution}{\color{ex}Solução:}
+  \newtheorem*{solution}{Solução:}
   % Proofs
-  \newtheorem*{proofT}{\color{thm}Demonstração:}
-  \newtheorem*{proofL}{\color{lmm}Demonstração:}
-  \newtheorem*{proofC}{\color{crl}Demonstração:}
-  \newtheorem*{proofP}{\color{prop}Demonstração:}
-  \newtheorem*{proofE}{\color{eg}Demonstração:}
-  \newtheorem*{proofO}{\color{obs}Demonstração:}
+  \newtheorem*{proofT}{Demonstração:}
+  \newtheorem*{proofL}{Demonstração:}
+  \newtheorem*{proofC}{Demonstração:}
+  \newtheorem*{proofP}{Demonstração:}
+  \newtheorem*{proofE}{Demonstração:}
+  \newtheorem*{proofO}{Demonstração:}
 
 % 3.4. STYLE IV - NOTATION REMARKS - NO NUMBERING AND ITALIC BODY 
 \theoremstyle{no_number-it_body}
