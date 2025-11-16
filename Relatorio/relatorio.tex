@@ -54,7 +54,7 @@
         Informalmente, pode-se definir um grafo como um conjunto de pontos ligados de alguma forma. Um exemplo, que será usado nesse estudo, é a malha viária de uma cidade, na qual as ruas representam as arestas e os pontos são as esquinas. Nesse caso, cada rua tem um tamanho, o que torna o grafo \textbf{ponderado}.
         
         \begin{definition} \label{def:caminho}
-            Dizemos que um grafo $G=(V,E)$ não vazio é um \textbf{caminho} se é da forma $V = {x_1, x_2, \dots, x_n}$ e $E = {(x_1,x_2), (x_2,x_3), \dots, (x_{n-1}, x_n)}$
+            Dizemos que um grafo $G=(V,E)$ não vazio é um \textbf{caminho} se é da forma $V = \{x_1, x_2, \dots, x_n\}$ e $E = \{(x_1,x_2), (x_2,x_3), \dots, (x_{n-1}, x_n)\}$
         \end{definition}
         
         As duas definições seguintes serão usadas posteriormente para resultados sobre a possibilidade de transformar o $pMP$ em um problema linear.
@@ -70,7 +70,14 @@
         
             \subsection{Algoritmos de distância mínima}
 
-        \section{Problema da p-mediana}
+            Na \autoref{sec:p-mediana}, será necessário avaliar a distância mínima entre cada nó de um grafo ponderado com valores não negativos. Dentre as formas de computar essas distâncias, dois algoritmos principais são considerados: o algoritmo de Dijkstra e o algoritmo de Floyd-Warshall.
+
+            O algoritmo de Dijkstra calcula, dado um vértice, a distância mínima entre todos os outros vértices de um grafo com complexidade (a depender da implementação) de $O((|V|+|E|)\log|V|)$, de acordo com \cite[p.~106]{roughgarden2018algorithms2}. Note que, para grafos esparsos, ou seja, $|E| = O(|V|)$, podemos aproximar a complexidade para $O(|E|\log|V|)$. Nesse caso, para calcular a distância entre todos os vértices de um grafo, temos que aplicar o algoritmo de Dijkstra $|V|$ vezes, o que resulta em uma complexidade de $O(|V||E|\log|V|) \approx O(|V|^2\log|V|)$.
+
+            O algoritmo de Floyd-Warshall calcula a distância mínima entre todos os pares de vértices de um grafo, com complexidade $O(|V|^3)$, de acordo com \cite{clrs4}. 
+
+            
+        \section{Problema da p-mediana} \label{sec:p-mediana}
 
             \subsection{p-mediana como problema de otimização linear}
 
