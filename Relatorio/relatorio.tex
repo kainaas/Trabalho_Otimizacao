@@ -21,8 +21,9 @@
 \begin{document}
 % --- TITLE BLOCK ---
     \imprimircapa
-    \tableofcontents*
+    \tableofcontents
 
+    \setcounter{page}{1}
     % --- CONTENT ---
     \chapter{Introdução}
 
@@ -57,7 +58,7 @@
             Dizemos que um grafo $G=(V,E)$ não vazio é um \textbf{caminho} se é da forma $V = \{x_1, x_2, \dots, x_n\}$ e $E = \{(x_1,x_2), (x_2,x_3), \dots, (x_{n-1}, x_n)\}$
         \end{definition}
         
-        As duas definições seguintes serão usadas posteriormente para resultados sobre a possibilidade de transformar o $pMP$ em um problema linear.
+        As duas definições seguintes serão usadas posteriormente na \autoref{subsec:pMP-linear} para resultados sobre a possibilidade de transformar o $pMP$ em um problema linear.
         
         \begin{definition} \label{def:conexo}
             Dizemos que um grafo $G=(V,E)$ é \textbf{conexo} se dados dois vértices $u,v \in V$, existe um caminho $A = (P, C)$ tal que $u,v \in P$. 
@@ -70,17 +71,82 @@
         
             \subsection{Algoritmos de distância mínima}
 
-            Na \autoref{sec:p-mediana}, será necessário avaliar a distância mínima entre cada nó de um grafo ponderado com valores não negativos. Dentre as formas de computar essas distâncias, dois algoritmos principais são considerados: o algoritmo de Dijkstra e o algoritmo de Floyd-Warshall.
+            Na \autoref{sec:implementação}, será necessário avaliar a distância mínima entre cada nó de um grafo ponderado com valores não negativos. Dentre as formas de computar essas distâncias, dois algoritmos principais são considerados: o algoritmo de Dijkstra e o algoritmo de Floyd-Warshall.
 
             O algoritmo de Dijkstra calcula, dado um vértice, a distância mínima entre todos os outros vértices de um grafo com complexidade (a depender da implementação) de $O((|V|+|E|)\log|V|)$, de acordo com \cite[p.~106]{roughgarden2018algorithms2}. Note que, para grafos esparsos, ou seja, $|E| = O(|V|)$, podemos aproximar a complexidade para $O(|E|\log|V|)$. Nesse caso, para calcular a distância entre todos os vértices de um grafo, temos que aplicar o algoritmo de Dijkstra $|V|$ vezes, o que resulta em uma complexidade de $O(|V||E|\log|V|) \approx O(|V|^2\log|V|)$.
 
             O algoritmo de Floyd-Warshall calcula a distância mínima entre todos os pares de vértices de um grafo, com complexidade $O(|V|^3)$, de acordo com \cite{clrs4}. 
 
-            
+
         \section{Problema da p-mediana} \label{sec:p-mediana}
+            O problema da p-mediana ($pMP$) é um problema de otimização inteira em que o objetivo é encontrar a localização de $p$ instalações em uma rede/grafo, tal que o custo total seja reduzido \cite{DASKIN2013}. O custo em um nó $i \in I$ é dado pelo produto da demanda em $i$ e a distância entre o nó $i$ e a instação mais perta de $i$. Assim, podemos formular o problema formalmente:
+            
+            Seja $I$ um conjunto de nós num grafo e $J \subseteq I$ o conjunto dos nós candidatos a receberem uma instalação.
 
-            \subsection{p-mediana como problema de otimização linear}
+            \textbf{Entradas}
 
+            \begin{itemize}
+                \item $h_i$ = demanda no nó $i \in I$
+                \item $d_{ij}$ = distância entre o nó de demanda $i \in I$ e o lugar canditato $j \in J$
+                \item $p$ = número de instalações a serem construídas
+            \end{itemize}
+
+            \textbf{Variáveis de decisão}
+
+            \begin{itemize}
+                \item $X_j = \begin{cases}
+                    1, \text{ se colocarmos uma instalação no local} j \in J \\
+                    0, \text{ caso contrário}
+                \end{cases}$
+                \item $Y_{ij} = \begin{cases}
+                    1, \text{ se o nó} i \in I \text{ é servido pela instalação no nó } j \in J \\
+                    0, \text{ caso contrário}
+                \end{cases}$
+            \end{itemize}
+
+            Formulamos então o problema: 
+            \begin{problem} \label{problem:pMP-inteiro}
+                \begin{align} 
+                    \text{Minimizar }     & \sum_{i\in I} \sum_{j \in J} h_i d_{ij} Y_{ij}    & \\
+                    \text{Sujeito a }   & \sum_{j\in J} Y_{ij} = 1                          & \forall i \in I \\
+                                        & \sum_{j \in J} X_j = p                            & \\
+                                        & Y_{ij} - X_{j} \leq 0                             & \forall i \in I; j \in J \\
+                                        & X_j \in \{0,1\}                                   & \forall j \in J \\
+                                        & Y_{ij} \in \{0,1\}                                & \forall i \in I; j \in J 
+                \end{align}
+            \end{problem}
+             A função objetivo $(3.1)$ minimiza as distâncias ponderada pela demanda de cada nó em relação à instalação mais próxima. A restrição $(3.2)$ diz que cada nó só pode estar designado a uma instalação e a $(3.3)$ restringe o número de instalação a ser exatamente $p$. A restrição $(3.4)$ expressa a necessidade de interligar as variáveis de localização $(X_j)$ com as variáveis de alocação $(Y_{ij})$. Ela diz que se um nó $i$ foi designado a um local $j$, então, necessariamente, $j$ tem que ter uma instalação, ou seja, $X_j = 1$. As restrições $(3.5)$ e $(3.6)$ são as condições de integralidade.
+            
+
+            \subsection{p-mediana como problema de otimização linear} \label{subsec:pMP-linear}
+                Note que o problema \autoref{problem:pMP-inteiro} é NP-difícil \cite[p.~241]{DASKIN2013}, ou seja, computá-lo é extremamente difícil. Uma das formas para tentar reduzir o tempo necessário para resolver o problema, é considerar o proceso de relaxação linear, em que as restrições de integralidade são completamente retiradas ou substuídas por restrições que limitam as variáveis a um intervalo. Com esse processo, criamos um problema linear similar, que é computável em tempo polinomial.
+
+                Em particular, se os conjuntos iniciais das restrições de integralidade estão contidos nos novos intervalos de restrição, então existem mais valores possíveis no problema linear do que no problema inteiro. Logo, o problema linear nos dá uma cota para o valor ótimo do problema inteiro. Além disso, se a tradução linear tem um resultado que satisfaz as condições de integralidade antigas, então essa solução também resolve o problema inteiro.
+
+                Para o $pMP$, podemos substítuir as restrições de integralidade $(3.5)$ e $(3.6)$ por:
+                \begin{align}
+                    0 \leq X_j \leq 1 && \forall j \in J \\
+                    0 \leq Y_{ij} \leq 1 && \forall i \in I; j \in J 
+                \end{align}
+
+                O que nos dá o problema linear:
+                \begin{problem}
+                    \begin{align} 
+                        \text{Minimizar }     & \sum_{i\in I} \sum_{j \in J} h_i d_{ij} Y_{ij}    & \notag \\
+                        \text{Sujeito a }   & \sum_{j\in J} Y_{ij} = 1                          & \forall i \in I \notag \\
+                                            & \sum_{j \in J} X_j = p                            & \notag \\
+                                            & Y_{ij} - X_{j} \leq 0                             & \forall i \in I; j \in J \notag \\
+                                            & 0 \leq X_j \leq 1                                 & \forall j \in J \notag \\
+                                            & 0 \leq Y_{ij} \leq 1                              & \forall i \in I; j \in J \notag 
+                    \end{align}
+                \end{problem}
+
+                Como os únicos inteiros do intervalo que restringe os $Y_{ij}$ e $X_j$ são o $0$ e o $1$, a solução do problema linear equivale à do problema inteiro quando ela é inteira. Uma condição para integralidade no $pMP$ é dado em \cite{BAIOU2011344}, no seguinte teorema:
+                \begin{theorem}
+                    Seja $G$ um grafo não direcionado conexo. Então o poliedro do problema linear é integral para todo $p \in \mathbb{N}$ (os vértices do poliedro possuem todas entradas inteiras) se e somente se $G$ é um caminho ou um ciclo simples.
+                \end{theorem}
+
+                Em geral, as redes nas quais o $pMP$ é proposto são mais complexas do que caminhos ou ciclos. Logo, só é possível saber para quais $p$ o relaxamento dará a solução ótima após computá-la.
         \section{Simplex primal}
 
         
@@ -91,7 +157,7 @@
 
         \section{Coleta e Tratamento de Dados}
 
-        \section{Implementação Computacional}
+        \section{Implementação Computacional} \label{sec:implementação}
 
 
     \chapter{Resultados}

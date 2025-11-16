@@ -21,6 +21,7 @@
 	brazil				% o último idioma é o principal do documento
 	]{abntex2}
 
+\pagestyle{plain}
 
 \usepackage[utf8]{inputenc}		% Input encoding: Assumes UTF-8 text editor
 \usepackage[T1]{fontenc}		% Output enconding: 8-bit, for better glyph support
@@ -46,6 +47,7 @@
   \def\propositionautorefname{Proposição}%
   \def\corollaryautorefname{Corolário}%
   \def\definitionautorefname{Definição}%
+  \def\problemauorefname{Problema}%
   % Algorithm environment from algpseudocode
   \floatname{algorithm}{Algoritmo}
   \algrenewcommand\algorithmicrequire{\textbf{Entrada:}}
@@ -124,7 +126,6 @@
 \colorlet{thm}{Tan}		% For theorem env.
 \colorlet{prop}{Maroon}		% For proposition env.
 \colorlet{crl}{RawSienna}	% For corollary env.
-\colorlet{def}{OliveGreen}	% For definition env.
 \colorlet{eg}{RoyalPurple}	% For example env.
 \colorlet{ex}{RoyalPurple}	% For exercise env.
 \colorlet{obs}{MidnightBlue}	% For remark env.
@@ -190,6 +191,7 @@
 \theoremstyle{name-it_number}
   \newtheorem{exercise}{\textcolor{ex}{Exercício}}[section]
   \newtheorem{example}[exercise]{\textcolor{eg}{Exemplo}}
+  \newtheorem{problem}[exercise]{Problema}
 
 % 3.3. STYLE III - REMARKS, SOLUTIONS & PROOFS - NO NUMBERING
 \theoremstyle{no_number}
