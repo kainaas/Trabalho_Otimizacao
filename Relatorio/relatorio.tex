@@ -23,9 +23,13 @@
     \imprimircapa
     \tableofcontents
 
+    \textual
+    \pagestyle{plain}
+
     \setcounter{page}{1}
     % --- CONTENT ---
     \chapter{Introdução}
+    \thispagestyle{plain}
 
     Afim de proporcionar um melhor atendimento à população de uma determinada cidade, a um determinado serviço, é crucial que o acesso geográfico seja, em alguma métrica, igualitário entre os indivíduos. Uma dessas formas de se medir esse acesso é através da distância entre os indivíduos e os pontos de atendimento. Assim, o problema da p-mediana $(pMP)$ busca, dado um conjunto de pontos (indivíduos) e um número p, selecionar p pontos (locais de atendimento) de forma a minimizar a soma das distâncias entre cada ponto e o ponto mais próximo selecionado.
 
@@ -37,6 +41,7 @@
 
 
     \chapter{Objetivos}
+    \thispagestyle{plain}
     O objetivo desse trabalho é comparar a disposição real de hospitais na cidade de São Carlos-SP com resultados obtidos através da aplicação do $pMP$ como um problema de otimização linear, além de sugirir possíveis novas localizações ótimas (no sentido de minimizar distâncias) para a construção desses estabelecimentos na cidade.
 
 
@@ -44,7 +49,7 @@
 
 
     \chapter{Revisão Bibliográfica}
-
+    \thispagestyle{plain}
         \section{Grafos}
         As seguintes definições são dadas em \cite{AURICHI}:
 
@@ -129,7 +134,7 @@
                     0 \leq Y_{ij} \leq 1 && \forall i \in I; j \in J 
                 \end{align}
 
-                O que nos dá o problema linear:
+                Para resultados não inteiros, pode-se interpretar a associação das variáveis de decisão como uma medida do quão bom é fazer uma instalação em determinado local. Com isso, temos o problema linear:
                 \begin{problem}
                     \begin{align} 
                         \text{Minimizar }     & \sum_{i\in I} \sum_{j \in J} h_i d_{ij} Y_{ij}    & \notag \\
@@ -149,9 +154,41 @@
                 Em geral, as redes nas quais o $pMP$ é proposto são mais complexas do que caminhos ou ciclos. Logo, só é possível saber para quais $p$ o relaxamento dará a solução ótima após computá-la.
 
         
-        \section{Interpolação de dados geográficos}
+        \section{Difusão de dados geográficos}
+        Em geral, dados populacionais coletados em pesquisas são compilados em parcelas do território. Nas pesquisas do IBGE por exemplo, os setores censitários são a menor unidade territorial de coleta e divulgação de dados. Logo, esses setores representam uma parte da população que mora naquela região, mas não indicam a localização exata de cada indivíduo.
+        
+        Para o $pMP$, é interessante que os dados sejam mais diluidos, ou seja, que cada indivíduo tenha uma localização específica. Assim, é possível calcular distâncias mais precisas entre os indivíduos e os pontos de instalação. Uma forma de fazer isso é através da difusão dos dados geográficos, que consiste em distribuir os indivíduos de um setor censitário para pontos nele ou próximos a ele. Uma das formas de se fazer isso, que será usada posteriormente, é utilizar uma discretização da equação do calor, dada por:
+        \begin{equation}
+            \frac{\partial u}{\partial t} = -\eta \nabla^2 u
+        \end{equation}
+        Em que $u(x,t)$ é a densidade de indivíduos no ponto $x$ no tempo $t$ e $\alpha$ é uma constante de difusão. A equação do calor modela o processo de difusão de calor em um meio, mas pode ser adaptada para modelar a difusão de indivíduos em um espaço geográfico. Com essa equação, utilizamos o método das diferenças finitas para chegar em:
+        \begin{equation}
+            \frac{u_{n+1}-u_n}{\Delta t} = -\eta \nabla^2 u_n
+        \end{equation}
+        Logo, temos que:
+        \begin{equation}
+            u_{n+1} = u_n - \eta \Delta t \nabla^2 u_n
+        \end{equation}
+        Para grafos, o operador laplaciano $\nabla^2$ é substituído pelo laplaciano discreto, que é dado por $L = D - A$, em que $D$ é a matriz diagonal dos graus dos vértices e $A$ é a matriz de adjacência do grafo. Além disso, $u_k$, nesse caso, representa um vetor com a quantidade de entra igual ao número de nós. Assim, a equação discreta da difusão em grafos é dada por:
+        \begin{equation}
+            u_{n+1} = u_n - \eta \Delta t L u_n
+        \end{equation}
+        Tomando $\alpha = \eta \Delta t$, considerando $u_n^k$ a k-ésima entrada do vetor $u_n$ e $L_k$ a k-ésima linha da matriz laplaciana, temos:
+        \begin{equation}
+            u_{n+1}^k = u_n^k - \alpha L_k^\top u_n
+        \end{equation}
+        Com algumas manipulações simples, chegamos em:
+        \begin{equation}
+            u_{n+1}^k = (1-\alpha |N(k)|)u_n^k + A_k^\top u_n
+        \end{equation}
+        Em que $N(k)$ é o conjunto de vizinhos do nó $k$. Note que, nessa forma, a quantidade de indivíduos em um nó é atualizada com base na quantidade de vizinhos de um determinado nó. Dessa forma, é mais conveniente utilizar a Laplaciana de \textit{random-walk}, dada por $L_{rw} = I - D^{-1}A$ \cite{lu_nankai2014}. Com essa matriz, a equação de difusão fica:
+        \begin{equation}
+            u_{n+1}^k = (1-\alpha)u_n^k + \alpha  (D^{-1}A)_k^\top u_n
+        \end{equation}
+        Com isso, a dissipação em cada nó é sempre uma porcentagem constante da quantidade de indivíduos nele, o que é mais intuitivo e prático.
 
     \chapter{Procedimentos e métodos}
+    \thispagestyle{plain}
         \section{Modelagem Matemática}    
 
         \section{Coleta e Tratamento de Dados}
@@ -160,8 +197,10 @@
 
 
     \chapter{Resultados}
+    \thispagestyle{plain}
 
     \chapter{Conclusão}
+    \thispagestyle{plain}
 
 
     % --- BIBLIOGRAPHY ---
