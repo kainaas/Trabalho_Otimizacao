@@ -13,14 +13,16 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import os
 
+path_arquivos = 'Arquivos'
+
 def visualizar_mapas_comparativos():
     """
     Gera e exibe os dois mapas de densidade populacional.
     """
     # --- 1. CONFIGURAÇÃO DOS ARQUIVOS E PARÂMETROS ---
-    ARQUIVO_GRAFO = 'sao_carlos_grafo_preciso.graphml'
+    ARQUIVO_GRAFO = os.path.join(path_arquivos,'sao_carlos_grafo_preciso.graphml')
     # Escolha qual arquivo de população você quer visualizar:
-    ARQUIVO_POPULACAO = 'populacoes_suavizadas.pkl' # Ou 'populacoes_nos.pkl'
+    ARQUIVO_POPULACAO = os.path.join('populacoes_suavizadas.pkl') # Ou 'populacoes_nos.pkl'
 
     # !! PARÂMETRO CHAVE !!
     # Define a população mínima para que um nó seja exibido no mapa da direita.

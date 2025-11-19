@@ -11,14 +11,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
+
+path_arquivos = 'Arquivos'
 def gerar_mapa_coropletico_sao_carlos():
     """
     Carrega os dados geográficos e demográficos, une-os e gera o mapa.
     """
     # --- 1. CONFIGURAÇÃO DOS FICHEIROS E CÓDIGO DO MUNICÍPIO ---
     # Verifique se os nomes dos seus ficheiros correspondem a estes.
-    ARQUIVO_SHAPEFILE_SETORES = 'SP_Setores_CD2022.shp'
-    ARQUIVO_CSV_POPULACAO = 'Agregados_por_setores_basico_BR_20250417.csv'
+    ARQUIVO_SHAPEFILE_SETORES = os.path.join(path_arquivos, 'SP_Setores_CD2022.shp')
+    ARQUIVO_CSV_POPULACAO = os.path.join(path_arquivos,'Agregados_por_setores_basico_BR_20250417.csv')
     CODIGO_MUNICIPIO_SAO_CARLOS = '3548906'
 
     # Verifica se os ficheiros de entrada existem
