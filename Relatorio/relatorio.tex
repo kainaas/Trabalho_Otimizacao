@@ -135,7 +135,7 @@
                 \end{align}
 
                 Para resultados não inteiros, pode-se interpretar a associação das variáveis de decisão como uma medida do quão bom é fazer uma instalação em determinado local. Com isso, temos o problema linear:
-                \begin{problem}
+                \begin{problem} \label{problem:pMP-linear}
                     \begin{align} 
                         \text{Minimizar }     & \sum_{i\in I} \sum_{j \in J} h_i d_{ij} Y_{ij}    & \notag \\
                         \text{Sujeito a }   & \sum_{j\in J} Y_{ij} = 1                          & \forall i \in I \notag \\
@@ -189,9 +189,20 @@
 
     \chapter{Procedimentos e métodos}
     \thispagestyle{plain}
-        \section{Modelagem Matemática}    
+        \section{Modelagem Matemática}
+        Modelamos o problema da localização de hospitais na cidade de São Carlos-SP como um $pMP$ relaxado linearmente, conforme pode ser visto em \autoref{problem:pMP-linear}. Para isso, foi considerado o grafo da malha viária da cidade, onde os nós representam as interseções entre as ruas e as arestas representam os trechos de rua entre essas interseções. Para cada nó foi atribuído um valor de população aproximado, que representa a demanda por serviços hospitalares naquele ponto. As distâncias entre os nós foram calculadas com base no comprimento dos trechos de rua que os conectam. Para os locais candidatos a instalação foram considerados apenas os nós que possuem uma demanda maior que $p_0$, com o inuito de reduzir o custo computacional do problema. Na notação do $pMP$ anteriormente definida, temos que:
+        \begin{itemize}
+            \item $I$ = conjunto de todos os nós do grafo (interseções da malha viária)
+            \item $h_i$ = população aproximada no nó $i \in I$
+            \item $J$ = $\{i \in I : h_i \ge p_0\}$
+            \item $d_{ij}$ = distância entre o nó de demanda $i \in I$ e o lugar canditato $j \in J$.
+            \item $p$ = número de hospitais a serem localizados
+        \end{itemize}
 
         \section{Coleta e Tratamento de Dados}
+        O grafo da cidade de São Carlos-SP foi obtido através do OpenStreetMap (OSM) utilizando a biblioteca OSMnx \cite{boeing2017osmnx}. A população aproximada em cada nó foi estimada com base nos dados do censo demográfico do IBGE de 2022 \cite{ibge_malhas_setores2022}, utilizando o método de difusão de dados geográficos descrito na \autoref{sec:p-mediana}.
+
+        Em suma, a população de cada setor foi comprimida para um único nó representativo do setor, e então a difusão foi aplicada para distribuir essa população pelos nós vizinhos na malha viária. Esse processo foi repetido por um número determinado de iterações, resultando em uma distribuição mais realista da população ao longo da malha viária da cidade.
 
         \section{Implementação Computacional} \label{sec:implementação}
 
