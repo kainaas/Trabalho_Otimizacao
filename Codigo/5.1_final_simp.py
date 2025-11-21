@@ -173,7 +173,7 @@ if __name__ == "__main__":
     print(f"\nProblema simplificado de {len(G_completo.nodes())} para {len(nos_populacao)} nós (centros populacionais).")
     
     # --- PARÂMETROS ---
-    NUMERO_DE_HOSPITAIS = 5
+    NUMERO_DE_HOSPITAIS = 6
 
     # --- PROCESSAMENTO ---
     # A otimização é feita apenas no conjunto simplificado de nós

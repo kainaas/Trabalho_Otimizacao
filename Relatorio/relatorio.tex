@@ -227,7 +227,7 @@
 
     Para a manipulação e visualização de dados geográficos, utilizou-se as bibliotecas \texttt{OSMnx} e \texttt{GeoPandas}, que permitem a extração da malha viária diretamente da plataforma OpenStreetMap e a manipulação de arquivos \textit{shapefile}. Para a construção da matriz de distâncias e operações em grafos, usa-se a biblioteca \texttt{NetworkX}, aplicando o algoritmo de Dijkstra para o cálculo de caminhos mínimos; pontua-se a tentativa de utilização do algoritmo de Floyd-Warshall, mas o mesmo mostrou-se muito ineficaz para este problema.
 
-    A resolução do problema de otimização linear (conforme modelado na \autoref{subsec:pMP-linear}) foi realizada através da biblioteca \texttt{PuLP}, utilizando o Simplex Dual para resolver o problema, visto que a tentativa de implementação do Simplex (Padrão) mostrou-se muito inapropriada ao problema, dado que sua execução demorou muito mais que o método escolhido.
+    A resolução do problema de otimização linear (conforme modelado na \autoref{subsec:pMP-linear}) foi realizada através da biblioteca \texttt{PuLP},com o metodo Simplex Dual que foi escolhido por apresentar desempenho superior ao Simplex Primal no nosso modelo, que possui muitas restrições (uma para cada par nó–candidato). Como mostrado por \cite{bixby2002solving}, implementações modernas do Simplex Dual tendem a superar o Primal em problemas grandes, altamente restritos e derivados de relaxações lineares, exatamente como o pMP. Na prática, o Simplex Primal mostrou-se muito mais lento, enquanto o Simplex Dual obteve soluções em tempo hábil.
 
     \subsection{Estratégias de Resolução}
 
