@@ -53,7 +53,6 @@ def integrar_populacao_ao_grafo():
     print("Amostra dos códigos (Shapefile): \n", gdf_setores['CD_CENSO'].head(3))
     print("Amostra dos códigos (População): \n", df_pop_sc['CD_CENSO'].head(3))
 
-    # ** A CORREÇÃO CRÍTICA ESTÁ AQUI **
     # Força AMBAS as colunas a serem do tipo 'string' antes de unir
     gdf_setores['CD_CENSO'] = gdf_setores['CD_CENSO'].astype(str)
     df_pop_sc['CD_CENSO'] = df_pop_sc['CD_CENSO'].astype(str)

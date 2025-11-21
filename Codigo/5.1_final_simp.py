@@ -18,20 +18,16 @@ import osmnx as ox
 import pickle
 import time
 import pandas as pd
-from os import path
+import os
 
-def calcular_distancias(G):
-    """
-    Calcula a matriz de distâncias no grafo completo. É o passo mais demorado.
-    """
-    print("\nConvertendo grafo para não-direcionado para o cálculo de distâncias...")
-    G_undirected = G.to_undirected()
-    print("Iniciando cálculo da matriz de distâncias (pode levar vários minutos)...")
-    start_time = time.time()
-    distancias = dict(nx.all_pairs_dijkstra_path_length(G_undirected, weight='length'))
-    end_time = time.time()
-    print(f"Matriz de distâncias calculada em {end_time - start_time:.2f} segundos.")
-    return distancias
+def carregar_distancias():
+    arquivo_dist = os.path.join('Arquivos', 'matriz_distancias.pkl')
+    if not os.path.exists(arquivo_dist):
+        print("Execute o script '3_5_calculo_distancias.py' primeiro.")
+        return None
+    print("Carregando matriz de distâncias pré-calculada...")
+    with open(arquivo_dist, 'rb') as f:
+        return pickle.load(f)
 
 def resolver_otimizacao_simplificada(nos_populacao, populacoes, distancias, n_hospitais):
     """
@@ -62,7 +58,8 @@ def resolver_otimizacao_simplificada(nos_populacao, populacoes, distancias, n_ho
 
     print("A resolver o problema... (Esta etapa agora será muito mais rápida!)")
     start_time = time.time()
-    prob.solve(pulp.PULP_CBC_CMD(msg=True))
+    solver = pulp.PULP_CBC_CMD(msg=True, options=['dualSimplex'])
+    prob.solve(solver)
     end_time = time.time()
     
     print(f"Problema resolvido em {end_time - start_time:.2f} segundos.")
@@ -98,7 +95,7 @@ def exportar_resultados_csv(G, resultados):
     df_resultados = df_resultados.sort_values(by='Probabilidade', ascending=False)
     
     # Salva em um arquivo CSV
-    nome_arquivo_saida = path.join('Arquivos','resultados_probabilidades.csv')
+    nome_arquivo_saida = os.path.join('Arquivos','resultados_probabilidades.csv')
     df_resultados.to_csv(nome_arquivo_saida, index=False, sep=';', decimal=',')
     
     print(f"✅ Resultados exportados com sucesso para '{nome_arquivo_saida}'")
@@ -157,10 +154,13 @@ def visualizar_probabilidades(G, resultados, n_hospitais):
 if __name__ == "__main__":
     print("--- Etapa 1: Carregar Dados Reais ---")
     try:
-        G_completo = ox.load_graphml(path.join('Arquivos', 'sao_carlos_grafo_preciso.graphml'))
+        G_completo = ox.load_graphml(os.path.join('Arquivos', 'sao_carlos_grafo_preciso.graphml'))
         # Use o ficheiro de população que preferir (original ou suavizado)
-        with open(path.join('Arquivos','populacoes_nos.pkl'), 'rb') as f:
+        with open(os.path.join('Arquivos','populacoes_nos.pkl'), 'rb') as f:
             populacoes_completas = pickle.load(f)
+            # AQUI MUDOU: Carrega distâncias
+            distancias_completas = carregar_distancias()
+            if distancias_completas is None: exit()
         print("Grafo e populações carregados com sucesso!")
     except FileNotFoundError:
         print("Erro: Ficheiros do grafo ou da população não encontrados.")
@@ -173,12 +173,9 @@ if __name__ == "__main__":
     print(f"\nProblema simplificado de {len(G_completo.nodes())} para {len(nos_populacao)} nós (centros populacionais).")
     
     # --- PARÂMETROS ---
-    NUMERO_DE_HOSPITAIS = 1
+    NUMERO_DE_HOSPITAIS = 5
 
     # --- PROCESSAMENTO ---
-    # O cálculo de distâncias ainda é feito no grafo completo para ser preciso
-    distancias_completas = calcular_distancias(G_completo)
-    
     # A otimização é feita apenas no conjunto simplificado de nós
     resultados = resolver_otimizacao_simplificada(nos_populacao, populacoes_filtradas, distancias_completas, NUMERO_DE_HOSPITAIS)
 

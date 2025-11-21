@@ -12,18 +12,17 @@ import time
 import pandas as pd
 import os
 
-def calcular_distancias(G):
-    """
-    Calcula a matriz de distâncias, tratando o grafo como não-direcionado.
-    """
-    print("\nConvertendo grafo para não-direcionado para o cálculo de distâncias...")
-    G_undirected = G.to_undirected()
+def carregar_distancias():
+    arquivo_dist = os.path.join('Arquivos', 'matriz_distancias.pkl')
+    if not os.path.exists(arquivo_dist):
+        print("❌ Erro: Matriz de distâncias não encontrada.")
+        print("Execute o script '3_5_calculo_distancias.py' primeiro.")
+        return None
     
-    print("Iniciando cálculo da matriz de distâncias (caminho mais curto)...")
-    start_time = time.time()
-    distancias = dict(nx.all_pairs_dijkstra_path_length(G_undirected, weight='length'))
-    end_time = time.time()
-    print(f"Matriz de distâncias calculada em {end_time - start_time:.2f} segundos.")
+    print("Carregando matriz de distâncias pré-calculada...")
+    with open(arquivo_dist, 'rb') as f:
+        distancias = pickle.load(f)
+    print("✅ Matriz carregada.")
     return distancias
 
 def resolver_localizacao_hospitais(G, populacoes, distancias, n_hospitais, populacao_minima):
@@ -57,7 +56,8 @@ def resolver_localizacao_hospitais(G, populacoes, distancias, n_hospitais, popul
 
     print("Resolvendo o problema... (Isso pode levar alguns minutos)")
     start_time = time.time()
-    prob.solve()
+    solver = pulp.PULP_CBC_CMD(msg=True, options=['dualSimplex'])
+    prob.solve(solver)
     end_time = time.time()
     
     print(f"Problema resolvido em {end_time - start_time:.2f} segundos.")
@@ -127,14 +127,19 @@ def visualizar_probabilidades(G, resultados, n_hospitais):
 
 # --- Execução Principal ---
 if __name__ == "__main__":
-    print("--- Etapa 1: Carregando Dados Reais ---")
+    print("--- Etapa 1: Carregando Dados ---")
     try:
         G = ox.load_graphml(os.path.join('Arquivos','sao_carlos_grafo_preciso.graphml'))
         with open(os.path.join('Arquivos', 'populacoes_suavizadas.pkl'), 'rb') as f:
             populacoes = pickle.load(f)
-        print("Grafo e populações carregados com sucesso!")
+        
+        # AQUI MUDOU: Carrega em vez de calcular
+        distancias = carregar_distancias()
+        if distancias is None: exit()
+            
+        print("Dados carregados com sucesso!")
     except FileNotFoundError:
-        print("Erro: Arquivos do grafo ou da população não encontrados.")
+        print("Erro: Arquivos base não encontrados.")
         exit()
 
     populacoes_filtradas = {node: pop for node, pop in populacoes.items() if node in G.nodes()}
@@ -144,7 +149,6 @@ if __name__ == "__main__":
     POPULACAO_MINIMA_CANDIDATO = 200 
 
     # --- PROCESSAMENTO ---
-    distancias = calcular_distancias(G)
     resultados = resolver_localizacao_hospitais(G, populacoes_filtradas, distancias, NUMERO_DE_HOSPITAIS, POPULACAO_MINIMA_CANDIDATO)
 
     # --- ANÁLISE E EXPORTAÇÃO ---

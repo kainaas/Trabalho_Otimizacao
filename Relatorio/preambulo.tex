@@ -1,3 +1,4 @@
+%!TeX root = relatorio.tex
 % █▀▄▀█ ▄▀█ ▀█▀ █░█   █▀█ █▀█ █▀▀ ▄▀█ █▀▄▀█ █▄▄ █░░ █▀▀
 % █░▀░█ █▀█ ░█░ █▀█   █▀▀ █▀▄ ██▄ █▀█ █░▀░█ █▄█ █▄▄ ██▄
 
@@ -9,31 +10,24 @@
 	% -- opções da classe memoir --
 	12pt,				% tamanho da fonte
 	openany,			% capítulos não pulam folhas
-	twoside,			% para impressão em verso e anverso. Oposto a oneside
+	oneside,			% <--- ALTERADO: 'oneside' mantêm a margem fixa (ideal para digital)
 	a4paper,			% tamanho do papel. 
-	% -- opções da classe abntex2 --
-	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
-	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
-	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
-	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
-	% -- opções do pacote babel --
 	english,			% idioma adicional para hifenização
 	brazil				% o último idioma é o principal do documento
 	]{abntex2}
 
 \pagestyle{plain}
 
-\usepackage[utf8]{inputenc}		% Input encoding: Assumes UTF-8 text editor
-\usepackage[T1]{fontenc}		% Output enconding: 8-bit, for better glyph support
-\usepackage[ %ABNT margins
+\usepackage[utf8]{inputenc}		% Input encoding
+\usepackage[T1]{fontenc}		% Output enconding
+\usepackage[ 
 	left=3cm,
 	top=3cm,
 	right=2cm,
 	bottom=2cm
-]
-{geometry}				% Set page margins (ABNT standard)
+]{geometry}				        % Margens ABNT
 
-\usepackage[brazil]{babel}		% Language-specific settings
+\usepackage[brazil]{babel}		% Configurações de linguagem
 \addto\extrasbrazil{%
   \def\sectionautorefname{Seção}%
   \def\subsectionautorefname{Subseção}%
@@ -41,145 +35,86 @@
   \def\figureautorefname{Figura}%
   \def\tableautorefname{Tabela}%
   \def\equationautorefname{Equação}%
-  % Custom amsthm environments
   \def\lemmaautorefname{Lema}%
   \def\theoremautorefname{Teorema}%
   \def\propositionautorefname{Proposição}%
   \def\corollaryautorefname{Corolário}%
   \def\definitionautorefname{Definição}%
   \def\problemauorefname{Problema}%
-  % Algorithm environment from algpseudocode
   \floatname{algorithm}{Algoritmo}
   \algrenewcommand\algorithmicrequire{\textbf{Entrada:}}
   \algrenewcommand\algorithmicensure{\textbf{Saída:}}
-} %
-\usepackage{csquotes}			% Context-sensitive quoting
-					% 'csquotes' works in tandem with babel
-					% 'csquotes' IS A 'biblatex' DEPENDENCY
-
+} 
+\usepackage{csquotes}			
 
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 %                                    STYLING                                     
 %                        Alter Visual Appearance of Text                         
 %................................................................................
-\usepackage{setspace}		% Allows for custom line spacing
-\usepackage[sc]{mathpazo}	% Set the font to Palatino
-\linespread{1.05}		% Recommended spacing adjutment for Palatino
-\usepackage[dvipsnames]{xcolor}	% Access to 68 named colors
-\usepackage{moresize}		% Additional font sizes
-\usepackage{enumerate}		% Customize item style in 'enumerate'
-\usepackage{multicol}		% Environment with multiple columns of text
-\usepackage[normalem]{ulem}	% More underline styles (and aligns bottoms of multiple underlines)
-				% 'normalem' prevents underlines from altering \emph
+\usepackage{setspace}		% Espaçamento entre linhas
+\usepackage[sc]{mathpazo}	% Fonte Palatino
+\linespread{1.05}		    % Ajuste para Palatino
+\usepackage[dvipsnames]{xcolor}	% Cores
+\usepackage{moresize}		% Tamanhos de fonte extras
+\usepackage{enumerate}		% Listas
+\usepackage{multicol}		% Múltiplas colunas
+\usepackage[normalem]{ulem}	% Sublinhados
+\usepackage{microtype}      % <--- IMPORTANTE: Melhora o espaçamento entre palavras
 
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 %                                     FLOATS                                     
 %               Manage Floating Content (e.g.: figures and tables)               
 %................................................................................
-\usepackage{subcaption}  % Format multiple images(tables) in one figure(table) environment
-\usepackage{booktabs}    % Format tables following scientific convention
-\usepackage{float}	 % Provides [H] 'Here' float placement specifier (use with caution)
-\usepackage{algorithm}     % Float environment for algorithms
-\usepackage{algpseudocode}  % Pseudocode commands for 'algorithm' environment
-
+\usepackage{subcaption}  
+\usepackage{booktabs}    
+\usepackage{float}	 
+\usepackage{algorithm}     
+\usepackage{algpseudocode}  
 
 %:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 %                                    GRAPHICS                                    
 %                             Generate/Import Images                              
 %.................................................................................
-% NATIVE PROGRAMMATIC DIAGRAMS & PLOTS
-\usepackage{tikz}		% Create vector graphics programmatically
-\usetikzlibrary{arrows.meta}	% Additional arrow styles
-\usepackage{pgfplots}		% Tool for creating function plots and charts
-\pgfplotsset{compat=1.18}	% Enforce version 1.18 for consistency
+\usepackage{tikz}		
+\usetikzlibrary{arrows.meta}	
+\usepackage{pgfplots}		
+\pgfplotsset{compat=1.18}	
+\usepackage{graphicx}		
 
-% EXTERNAL IMAGE MANAGEMENT
-\usepackage{graphicx}		% LaTeX standard for including external image files
-
-
-% █▀▄▀█ ▄▀█ ▀█▀ █░█
-% █░▀░█ █▀█ ░█░ █▀█
 %:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 %                                 MATH PACKAGES                                  
 %.................................................................................
-% AMS (American Mathematical Society)
-\usepackage{amssymb} 	% AMS's package for mathematical symbols
-\usepackage{amsmath}	% AMS's package for mathematical typesetting
-\usepackage{mathtools}  % Extends amsmath's functionalities (i.e.: a superset)
-\usepackage{amsthm}    	% AMS's package for creating theorem-like environments
-
-% NICHE MATH PACKAGES
-\usepackage{xfrac}	% Slanted fractions (\sfrac)
-\usepackage{cancel}	% Strike-through for symbols (\cancel and \cancelto)
-\usepackage{bbm}	% Shorthand solution for blackboard boldfaced 1 (use \mathbbm{1})
-\usepackage[		% Control over fonts used in \mathbb, \mathcal, \mathfrak & \mathscr
-  scr=boondox,	% 'boondox' is a script font that suports lowercase letters
-  cal=esstix	% 'esstix' is a calligraphic font that supports lowercase, but not bold letters
+\usepackage{amssymb} 	
+\usepackage{amsmath}	
+\usepackage{mathtools}  
+\usepackage{amsthm}    	
+\usepackage{xfrac}	
+\usepackage{cancel}	
+\usepackage{bbm}	
+\usepackage[		
+  scr=boondox,	
+  cal=esstix	
 ]{mathalpha}
 
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-%                           CUSTOM THEOREM ENVIRONMENTS                            
-%                                   (Color Coded)                                  
+%                            CUSTOM THEOREM ENVIRONMENTS                            
 %..................................................................................
-% 1. DEFINE COLOR CODE FOR EACH THEOREM-LIKE ENVIRONMENT (makes change of color choice effortless)
-\colorlet{lmm}{DarkOrchid}	% For lemma env.
-\colorlet{thm}{Tan}		% For theorem env.
-\colorlet{prop}{Maroon}		% For proposition env.
-\colorlet{crl}{RawSienna}	% For corollary env.
-\colorlet{eg}{RoyalPurple}	% For example env.
-\colorlet{ex}{RoyalPurple}	% For exercise env.
-\colorlet{obs}{MidnightBlue}	% For remark env.
-\colorlet{note}{PineGreen}	% For notation remark env.
+\colorlet{lmm}{DarkOrchid}	
+\colorlet{thm}{Tan}		
+\colorlet{prop}{Maroon}		
+\colorlet{crl}{RawSienna}	
+\colorlet{eg}{RoyalPurple}	
+\colorlet{ex}{RoyalPurple}	
+\colorlet{obs}{MidnightBlue}	
+\colorlet{note}{PineGreen}	
 
-%. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-% 2. DEFINE CUSTOM THEOREM STYLES
-% 2.1. STYLE I - TAUTOLOGIES - FIRST NUMBER, THEN NAME
-\newtheoremstyle{number-name}
-{4mm}					  % Space above env.
-{4mm}					  % Space below env.
-{\itshape}				  % Body font
-{}					  % Indent amount
-{\bfseries}				  % Head font
-{}					  % Punctuation after head
-{.3em}					  % Space after head
-{\thmnumber{#2}\,\thmname{#1}}		  % Head spec
+% ESTILOS DE TEOREMA
+\newtheoremstyle{number-name}{4mm}{4mm}{\itshape}{}{\bfseries}{}{.3em}{\thmnumber{#2}\,\thmname{#1}}
+\newtheoremstyle{name-it_number}{4mm}{4mm}{\itshape}{}{\bfseries}{}{.3em}{\thmname{#1}\,{\itshape\thmnumber{#2}}}
+\newtheoremstyle{no_number}{4mm}{4mm}{}{}{\bfseries}{}{.3em}{}
+\newtheoremstyle{no_number-it_body}{4mm}{4mm}{\itshape}{}{\bfseries}{}{.3em}{}
 
-% 2.2. STYLE II - EXAMPLES & EXERCISES - FIRST NAME, THEN ITALIC NUMBER 
-\newtheoremstyle{name-it_number}
-{4mm}						% Space above env.
-{4mm}						% Space below env.
-{\itshape}					% Body font
-{}						% Indent amount
-{\bfseries}					% Head font
-{}						% Punctuation after head
-{.3em}						% Space after head
-{\thmname{#1}\,{\itshape\thmnumber{#2}}}	% Head spec
-
-% 2.3. STYLE III - REMARKS, SOLUTIONS & PROOFS - NO NUMBERING (should refer to a numbered env.)
-\newtheoremstyle{no_number}
-{4mm}						% Space above env.
-{4mm}						% Space below env.
-{}						% Body font
-{}						% Indent amount
-{\bfseries}					% Head font
-{}						% Punctuation after head
-{.3em}						% Space after head
-{}						% Head spec
-
-% 2.4. STYLE IV - NOTATION REMARKS - NO NUMBERING (should refer to a numbered env.) AND ITALIC BODY 
-\newtheoremstyle{no_number-it_body}
-{4mm}						% Space above
-{4mm}						% Space below
-{\itshape}					% Body font
-{}						% Indent amount
-{\bfseries}					% Head font
-{}						% Punctuation after head
-{.3em}						% Space after head
-{}						% Head spec
-
-%. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-% 3. APPLY THEOREM STYLES AND DEFINE RESPECTIVE ENVIRONMENTS
-% 3.1. STYLE I - TAUTOLOGIES - FIRST NUMBER, THEN NAME
+% DEFINIÇÃO DOS AMBIENTES
 \theoremstyle{number-name}
   \newtheorem{lemma}{Lema:}[section]
   \newtheorem{theorem}[lemma]{Teorema:}
@@ -187,19 +122,14 @@
   \newtheorem{corollary}[lemma]{Corolário:}
   \newtheorem{definition}[lemma]{Definição:}
 
-% 3.2. STYLE II - EXAMPLES & EXERCISES - FIRST NAME, THEN ITALIC NUMBER 
 \theoremstyle{name-it_number}
   \newtheorem{exercise}{\textcolor{ex}{Exercício}}[section]
   \newtheorem{example}[exercise]{\textcolor{eg}{Exemplo}}
   \newtheorem{problem}[exercise]{Problema}
 
-% 3.3. STYLE III - REMARKS, SOLUTIONS & PROOFS - NO NUMBERING
 \theoremstyle{no_number}
-  % Remark
   \newtheorem*{observation*}{Observação:}
-  % Solution
   \newtheorem*{solution}{Solução:}
-  % Proofs
   \newtheorem*{proofT}{Demonstração:}
   \newtheorem*{proofL}{Demonstração:}
   \newtheorem*{proofC}{Demonstração:}
@@ -207,59 +137,45 @@
   \newtheorem*{proofE}{Demonstração:}
   \newtheorem*{proofO}{Demonstração:}
 
-% 3.4. STYLE IV - NOTATION REMARKS - NO NUMBERING AND ITALIC BODY 
 \theoremstyle{no_number-it_body}
   \newtheorem*{notation*}{\color{note}Notação:}
 
-%. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-% EXTRA: CUSTOM QED SYMBOL (a small black square)
 \renewcommand\qedsymbol{\scriptsize $\blacksquare$}
 
+% COMANDOS MATEMÁTICOS
+\newcommand{\e}{\mathscr{e}}		
+\newcommand{\longto}{\longrightarrow}	
+\newcommand*{\defeq}{\mathrel{\vcenter{\baselineskip0.5ex \lineskiplimit0pt \hbox{\scriptsize.}\hbox{\scriptsize.}}} =}					
+\newcommand{\subnormal}{\triangleleft}	
+\newcommand{\supnormal}{\triangleright}	
+\newcommand{\limplies}{\rightarrow}	
+\newcommand{\liff}{\leftrightarrow}	
+\newcommand{\nand}{\uparrow}		
+\newcommand{\nor}{\downarrow}		
+\newcommand{\xor}{\veebar}		
 
-%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-%                              CUSTOM MATH COMMANDS                               
-%.................................................................................
-% CONSTANTS
-\newcommand{\e}{\mathscr{e}}		% Special notation for Euler's number
-
-% RELATIONS
-\newcommand{\longto}{\longrightarrow}	% Alias to note function domain/codomain (f: A --> B)
-\newcommand*{\defeq}{\mathrel{\vcenter{\baselineskip0.5ex \lineskiplimit0pt
-\hbox{\scriptsize.}\hbox{\scriptsize.}}}%
-=}					% Compact colon-equals
-\newcommand{\subnormal}{\triangleleft}	% Normal subgroup (left)
-\newcommand{\supnormal}{\triangleright}	% Normal subgroup (right)
-
-% LOGIC
-\newcommand{\limplies}{\rightarrow}	% Conditional connector
-\newcommand{\liff}{\leftrightarrow}	% Biconditional connector
-\newcommand{\nand}{\uparrow}		% NAND connector
-\newcommand{\nor}{\downarrow}		% NOR connector
-\newcommand{\xor}{\veebar}		% XOR connector
-
-
-% LOADED LAST TO AVOID DEPENDENCY ERRORS
 %:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 %                                  BIBLIOGRAPHY                                   
-%                                Manage References                                
 %.................................................................................
 \usepackage[
-	backend=biber,	% Use Biber backend (more powerful than BibTex)
-	style=abnt,	% ABNT style
-	sorting=nyt	% 'nyt' stands for name, year, title (ABNT standard)
+	backend=biber,	
+	style=abnt,	
+	sorting=nyt	
 ]{biblatex}
-
 
 %:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 %                                  FINALIZATION                                   
-%                 Packages That Patch Others. MUST BE LOADED LAST                 
 %.................................................................................
-\usepackage{hyperref}		% Add hyperlinks to references, ToC and URLs
+\usepackage{xurl}           % <--- ADICIONADO: Quebra URLs em qualquer lugar (corrige links grandes)
+\usepackage{hyperref}		% Links clicáveis
 \hypersetup{
-	colorlinks=true,	% true: colored links; false: boxed links
-	allcolors=NavyBlue,	% Set all link types to a single color
+	colorlinks=true,	
+	allcolors=NavyBlue,	
 }
 
-\newcommand{\customref}[2]{%	% Simple alias for custom link text
+\newcommand{\customref}[2]{%	
 	\hyperref[#2]{#1}%
 }
+
+% <--- ADICIONADO: Impede que o LaTeX estique o texto verticalmente para preencher a página
+\raggedbottom
