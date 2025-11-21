@@ -256,7 +256,7 @@
         
         \item \textbf{Pré-cálculo de Distâncias (\texttt{4\_distancias.py}):} Dada a complexidade computacional do cálculo de caminhos mínimos em grafos urbanos, este script foi criado para executar o algoritmo de Dijkstra para todos os pares de nós ($O(V \cdot E \log V)$) uma única vez. O resultado é uma matriz de distâncias persistida em disco (arquivo .pkl), permitindo que as otimizações subsequentes sejam executadas rapidamente sem recalcular rotas.
         
-        \item \textbf{Otimização (\texttt{5\_final.py} ou \texttt{5.1\_final\_simp.py}):} Carrega o grafo, a população suavizada e a matriz de distâncias pré-calculada. Resolve o problema linear via Simplex Dual e exporta os mapas e tabelas de resultados, permitindo testar diferentes valores de $p$ (número de hospitais).
+        \item \textbf{Otimização (\texttt{5\_final.py} ou \texttt{5.1\_final\_simp.py}):} Carrega o grafo, a população e a matriz de distâncias pré-calculada. Resolve o problema linear via Simplex Dual e exporta os mapas e tabelas de resultados, permitindo testar diferentes valores de $p$ (número de hospitais).
     \end{enumerate}
 
     \chapter{Resultados}
