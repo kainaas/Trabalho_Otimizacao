@@ -22,12 +22,12 @@ def visualizar_mapas_comparativos():
     # --- 1. CONFIGURAÇÃO DOS ARQUIVOS E PARÂMETROS ---
     ARQUIVO_GRAFO = os.path.join(path_arquivos,'sao_carlos_grafo_preciso.graphml')
     # Escolha qual arquivo de população você quer visualizar:
-    ARQUIVO_POPULACAO = os.path.join('populacoes_suavizadas.pkl') # Ou 'populacoes_nos.pkl'
+    ARQUIVO_POPULACAO = os.path.join(path_arquivos, 'populacoes_suavizadas.pkl') # Ou 'populacoes_nos.pkl'
 
     # !! PARÂMETRO CHAVE !!
     # Define a população mínima para que um nó seja exibido no mapa da direita.
     # Experimente com valores como 1, 10, 50 para ver o efeito.
-    POPULACAO_MINIMA_PARA_EXIBIR = 1
+    POPULACAO_MINIMA_PARA_EXIBIR = 200
     # --- 2. CARREGAR OS DADOS ---
     print("Carregando grafo e população...")
     if not all(os.path.exists(f) for f in [ARQUIVO_GRAFO, ARQUIVO_POPULACAO]):
@@ -57,7 +57,7 @@ def visualizar_mapas_comparativos():
     fig.colorbar(nodes1, ax=ax1, shrink=0.6, label='População Atribuída')
 
     # --- Gráfico 2: Filtrado (Direita) ---
-    ax2.set_title(f'Distribuição Filtrada (Pop. >= {POPULACAO_MINIMA_PARA_EXIBIR})', fontsize=16)
+    ax2.set_title(f'Distribuição Filtrada (Pop. $\geq$ {POPULACAO_MINIMA_PARA_EXIBIR})', fontsize=16)
     ox.plot_graph(G, ax=ax2, show=False, close=False, node_size=0, edge_color='#CCCCCC')
 
     # Filtra os nós que atendem ao critério

@@ -66,7 +66,6 @@ def visualizar_grafo(G):
 
 # --- Execução Principal ---
 if __name__ == "__main__":
-    # Esta é a parte que foi corrigida. Agora a função é chamada e o resultado é salvo.
     grafo_sc = extrair_e_salvar_grafo()
     
     if grafo_sc:

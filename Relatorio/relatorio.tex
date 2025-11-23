@@ -6,7 +6,7 @@
 \graphicspath{ {./imagens/} }
 
 
-\titulo{Aplicação do problema da p-mediana na distrubuição de hospitais na cidade de São Carlos - SP}
+\titulo{Aplicação do problema da p-mediana na distribuição de hospitais na cidade de São Carlos - SP}
 \autor{Fabio Kauê Araujo da Silva - 16311045\\
                     Gabriel Inumaru Esteves- 15453487\\
                     Kainã Alves Tureso - 15466391\\
@@ -31,7 +31,7 @@
     \chapter{Introdução}
     \thispagestyle{plain}
 
-    Afim de proporcionar um melhor atendimento à população de uma determinada cidade, a um determinado serviço, é crucial que o acesso geográfico seja, em alguma métrica, igualitário entre os indivíduos.
+    A fim de proporcionar um melhor atendimento à população de uma determinada cidade, em um determinado serviço, é crucial que o acesso geográfico seja, em alguma métrica, igualitário entre os indivíduos.
     Uma dessas formas de se medir esse acesso é através da distância entre os indivíduos e os pontos de atendimento.
     Assim, o problema da p-mediana $(pMP)$ busca, dado um conjunto de pontos (indivíduos) e um número p, selecionar p pontos (locais de atendimento) de forma a minimizar a soma das distâncias entre cada ponto e o ponto mais próximo selecionado.
     Uma das aplicações do $pMP$ é na localização de hospitais em uma cidade, onde o objetivo é minimizar a distância total que os habitantes da cidade precisam percorrer para chegar ao hospital mais próximo.
@@ -40,7 +40,7 @@
 
     \chapter{Objetivos}
     \thispagestyle{plain}
-    O objetivo desse trabalho é comparar a disposição real de hospitais na cidade de São Carlos-SP com resultados obtidos através da aplicação do $pMP$ como um problema de otimização linear, além de sugirir possíveis novas localizações ótimas (no sentido de minimizar distâncias) para a construção desses estabelecimentos na cidade.
+    O objetivo deste trabalho é comparar a disposição real de hospitais na cidade de São Carlos - SP com resultados obtidos através da aplicação do $pMP$ como um problema de otimização linear, além de sugerir possíveis novas localizações ótimas (no sentido de minimizar distâncias) para a construção desses estabelecimentos na cidade.
 
     \chapter{Revisão Bibliográfica}
     \thispagestyle{plain}
@@ -48,12 +48,12 @@
         As seguintes definições são dadas em \cite{AURICHI}:
 
         \begin{definition} \label{def:grafo}
-            Um \textbf{grafo} é o par $G=(V,E)$ em que $V$ é um conjunto de pontos denotado \textbf{vértices} e $E\subset V^2$ é o conjunto de \textbf{arestas}.
+            Um \textbf{grafo} é o par $G=(V,E)$ em que $V$ é um conjunto de pontos denotado por \textbf{vértices} e $E\subset V^2$ é o conjunto de \textbf{arestas}.
         \end{definition}
 
         Informalmente, pode-se definir um grafo como um conjunto de pontos ligados de alguma forma.
-        Um exemplo, que será usado nesse estudo, é a malha viária de uma cidade, na qual as ruas representam as arestas e os pontos são as esquinas.
-        Nesse caso, cada rua tem um tamanho, o que torna o grafo \textbf{ponderado}.
+        Um exemplo, que será usado neste estudo, é a malha viária de uma cidade, na qual as ruas representam as arestas e os pontos são as esquinas.
+        Neste caso, cada rua tem um tamanho, o que torna o grafo \textbf{ponderado}.
         \begin{definition} \label{def:caminho}
             Dizemos que um grafo $G=(V,E)$ não vazio é um \textbf{caminho} se é da forma $V = \{x_1, x_2, \dots, x_n\}$ e $E = \{(x_1,x_2), (x_2,x_3), \dots, (x_{n-1}, x_n)\}$
         \end{definition}
@@ -70,7 +70,7 @@
         
             \subsection{Algoritmos de distância mínima}
 
-            Na \autoref{sec:implementação}, será necessário avaliar a distância mínima entre cada nó de um grafo ponderado com valores não negativos.
+            Na \autoref{sec:implementação}, será necessário avaliar a distância mínima entre cada par de nós de um grafo ponderado com valores não negativos.
             Dentre as formas de computar essas distâncias, dois algoritmos principais são considerados: o algoritmo de Dijkstra e o algoritmo de Floyd-Warshall.
             O algoritmo de Dijkstra calcula, dado um vértice, a distância mínima entre todos os outros vértices de um grafo com complexidade (a depender da implementação) de $O((|V|+|E|)\log|V|)$, de acordo com \cite[p.~106]{roughgarden2018algorithms2}.
             Note que, para grafos esparsos, ou seja, $|E| = O(|V|)$, podemos aproximar a complexidade para $O(|E|\log|V|)$.
@@ -79,15 +79,15 @@
 
             \section{Problema da p-mediana} \label{sec:p-mediana}
             O problema da p-mediana ($pMP$) é um problema de otimização inteira em que o objetivo é encontrar a localização de $p$ instalações em uma rede/grafo, tal que o custo total seja reduzido \cite{DASKIN2013}.
-            O custo em um nó $i \in I$ é dado pelo produto da demanda em $i$ e a distância entre o nó $i$ e a instação mais perta de $i$.
+            O custo em um nó $i \in I$ é dado pelo produto da demanda em $i$ e a distância entre o nó $i$ e a instalação mais próxima de $i$.
             Assim, podemos formular o problema formalmente:
             
-            Seja $I$ um conjunto de nós num grafo e $J \subseteq I$ o conjunto dos nós candidatos a receberem uma instalação.
+            Seja $I$ um conjunto de nós num grafo e $J \subseteq I$ o conjunto dos nós candidatos a receber uma instalação.
             \textbf{Entradas}
 
             \begin{itemize}
                 \item $h_i$ = demanda no nó $i \in I$
-                \item $d_{ij}$ = distância entre o nó de demanda $i \in I$ e o lugar canditato $j \in J$
+                \item $d_{ij}$ = distância entre o nó de demanda $i \in I$ e o local candidato $j \in J$
                 \item $p$ = número de instalações a serem construídas
             \end{itemize}
 
@@ -115,19 +115,19 @@
                                         & Y_{ij} \in \{0,1\}                                & \forall i \in I; j \in J 
                 \end{align}
             \end{problem}
-             A função objetivo $(3.1)$ minimiza as distâncias ponderada pela demanda de cada nó em relação à instalação mais próxima.
-            A restrição $(3.2)$ diz que cada nó só pode estar designado a uma instalação e a $(3.3)$ restringe o número de instalação a ser exatamente $p$.
+             A função objetivo $(3.1)$ minimiza as distâncias ponderadas pela demanda de cada nó em relação à instalação mais próxima.
+            A restrição $(3.2)$ diz que cada nó só pode estar designado a uma instalação e a $(3.3)$ restringe o número de instalações a ser exatamente $p$.
             A restrição $(3.4)$ expressa a necessidade de interligar as variáveis de localização $(X_j)$ com as variáveis de alocação $(Y_{ij})$.
             Ela diz que se um nó $i$ foi designado a um local $j$, então, necessariamente, $j$ tem que ter uma instalação, ou seja, $X_j = 1$.
             As restrições $(3.5)$ e $(3.6)$ são as condições de integralidade.
             \subsection{p-mediana como problema de otimização linear} \label{subsec:pMP-linear}
                 Note que o problema \autoref{problem:pMP-inteiro} é NP-difícil \cite[p.~241]{DASKIN2013}, ou seja, computá-lo é extremamente difícil.
-                Uma das formas para tentar reduzir o tempo necessário para resolver o problema, é considerar o proceso de relaxação linear, em que as restrições de integralidade são completamente retiradas ou substuídas por restrições que limitam as variáveis a um intervalo.
+                Uma das formas para tentar reduzir o tempo necessário para resolver o problema, é considerar o processo de relaxação linear, em que as restrições de integralidade são completamente retiradas ou substituídas por restrições que limitam as variáveis a um intervalo.
                 Com esse processo, criamos um problema linear similar, que é computável em tempo polinomial.
                 Em particular, se os conjuntos iniciais das restrições de integralidade estão contidos nos novos intervalos de restrição, então existem mais valores possíveis no problema linear do que no problema inteiro.
                 Logo, o problema linear nos dá uma cota para o valor ótimo do problema inteiro.
                 Além disso, se a tradução linear tem um resultado que satisfaz as condições de integralidade antigas, então essa solução também resolve o problema inteiro.
-                Para o $pMP$, podemos substítuir as restrições de integralidade $(3.5)$ e $(3.6)$ por:
+                Para o $pMP$, podemos substituir as restrições de integralidade $(3.5)$ e $(3.6)$ por:
                 \begin{align}
                     0 \leq X_j \leq 1 && \forall j \in J \\
                     0 \leq Y_{ij} \leq 1 && \forall i \in I; j \in J 
@@ -146,10 +146,10 @@
                     \end{align}
                 \end{problem}
 
-                Como os únicos inteiros do intervalo que restringe os $Y_{ij}$ e $X_j$ são o $0$ e o $1$, a solução do problema linear equivale à do problema inteiro quando ela é inteira.
+                Como os únicos inteiros do intervalo que restringem os $Y_{ij}$ e $X_j$ são o $0$ e o $1$, a solução do problema linear equivale à do problema inteiro quando ela é inteira.
                 Uma condição para integralidade no $pMP$ é dado em \cite{BAIOU2011344}, no seguinte teorema:
                 \begin{theorem}
-                    Seja $G$ um grafo não direcionado conexo. Então o poliedro do problema linear é integral para todo $p \in \mathbb{N}$ (os vértices do poliedro possuem todas entradas inteiras) se e somente se $G$ é um caminho ou um ciclo simples.
+                    Seja $G$ um grafo não direcionado conexo. Então o poliedro do problema linear é integral para todo $p \in \mathbb{N}$ (os vértices do poliedro possuem todas as entradas inteiras) se e somente se $G$ é um caminho ou um ciclo simples.
                 \end{theorem}
 
                 Em geral, as redes nas quais o $pMP$ é proposto são mais complexas do que caminhos ou ciclos.
@@ -158,16 +158,16 @@
         Em geral, dados populacionais coletados em pesquisas são compilados em parcelas do território.
         Nas pesquisas do IBGE por exemplo, os setores censitários são a menor unidade territorial de coleta e divulgação de dados.
         Logo, esses setores representam uma parte da população que mora naquela região, mas não indicam a localização exata de cada indivíduo.
-        Para o $pMP$, é interessante que os dados sejam mais diluidos, ou seja, que cada indivíduo tenha uma localização específica.
+        Para o $pMP$, é interessante que os dados sejam mais diluídos, ou seja, que cada indivíduo tenha uma localização específica.
         Assim, é possível calcular distâncias mais precisas entre os indivíduos e os pontos de instalação.
         Uma forma de fazer isso é através da difusão dos dados geográficos, que consiste em distribuir os indivíduos de um setor censitário para pontos nele ou próximos a ele.
         Uma das formas de se fazer isso, que será usada posteriormente, é utilizar uma discretização da equação do calor, dada por:
         \begin{equation}
             \frac{\partial u}{\partial t} = -\eta \nabla^2 u
         \end{equation}
-        Em que $u(x,t)$ é a densidade de indivíduos no ponto $x$ no tempo $t$ e $\alpha$ é uma constante de difusão.
+        Em que $u(x,t)$ é a densidade de indivíduos no ponto $x$ no tempo $t$ e $\eta$ é uma constante de difusão.
         A equação do calor modela o processo de difusão de calor em um meio, mas pode ser adaptada para modelar a difusão de indivíduos em um espaço geográfico.
-        Com essa equação, utilizamos o método das diferenças finitas para chegar em:
+        Com essa equação, utilizamos o método das diferenças finitas para obter:
         \begin{equation}
             \frac{u_{n+1}-u_n}{\Delta t} = -\eta \nabla^2 u_n
         \end{equation}
@@ -176,7 +176,7 @@
             u_{n+1} = u_n - \eta \Delta t \nabla^2 u_n
         \end{equation}
         Para grafos, o operador laplaciano $\nabla^2$ é substituído pelo laplaciano discreto, que é dado por $L = D - A$, em que $D$ é a matriz diagonal dos graus dos vértices e $A$ é a matriz de adjacência do grafo.
-        Além disso, $u_k$, nesse caso, representa um vetor com a quantidade de entra igual ao número de nós.
+        Além disso, $u_k$, neste caso, representa um vetor com a quantidade de entrada igual ao número de nós.
         Assim, a equação discreta da difusão em grafos é dada por:
         \begin{equation}
             u_{n+1} = u_n - \eta \Delta t L u_n
@@ -196,48 +196,69 @@
         \begin{equation}
             u_{n+1}^k = (1-\alpha)u_n^k + \alpha  (D^{-1}A)_k^\top u_n
         \end{equation}
-        Com isso, a dissipação em cada nó é sempre uma porcentagem constante da quantidade de indivíduos nele, o que é mais intuitivo e prático.
+        Com isso, a dissipação em cada nó é sempre uma porcentagem constante da quantidade de indivíduos nele, o que é mais intuitivo e prático. Chamaremos de fator de retenção o valor $1-\alpha$.
 
     \chapter{Procedimentos e métodos}
     \thispagestyle{plain}
         \section{Modelagem Matemática}
-        Modelamos o problema da localização de hospitais na cidade de São Carlos-SP como um $pMP$ relaxado linearmente, conforme pode ser visto em \autoref{problem:pMP-linear}.
+        Modelamos o problema da localização de hospitais na cidade de São Carlos - SP como um $pMP$ relaxado linearmente, conforme pode ser visto em \autoref{problem:pMP-linear}.
         Para isso, foi considerado o grafo da malha viária da cidade, onde os nós representam as interseções entre as ruas e as arestas representam os trechos de rua entre essas interseções.
         Para cada nó foi atribuído um valor de população aproximado, que representa a demanda por serviços hospitalares naquele ponto.
         As distâncias entre os nós foram calculadas com base no comprimento dos trechos de rua que os conectam.
-        Para os locais candidatos a instalação foram considerados apenas os nós que possuem uma demanda maior que $p_0$, com o inuito de reduzir o custo computacional do problema.
+        Para os locais candidatos à instalação foram considerados apenas os nós que possuem uma demanda maior que $p_0$, com o intuito de reduzir o custo computacional do problema.
         Na notação do $pMP$ anteriormente definida, temos que:
         \begin{itemize}
             \item $I$ = conjunto de todos os nós do grafo (interseções da malha viária)
             \item $h_i$ = população aproximada no nó $i \in I$
             \item $J$ = $\{i \in I : h_i \ge p_0\}$
-            \item $d_{ij}$ = distância entre o nó de demanda $i \in I$ e o lugar canditato $j \in J$.
+            \item $d_{ij}$ = distância entre o nó de demanda $i \in I$ e o local candidato $j \in J$.
             \item $p$ = número de hospitais a serem localizados
         \end{itemize}
 
         \section{Coleta e Tratamento de Dados}
-        O grafo da cidade de São Carlos-SP foi obtido através do OpenStreetMap (OSM) utilizando a biblioteca OSMnx \cite{boeing2017osmnx}.
-        A população aproximada em cada nó foi estimada com base nos dados do censo demográfico do IBGE de 2022 \cite{ibge_malhas_setores2022}, utilizando o método de difusão de dados geográficos descrito na \autoref{sec:p-mediana}.
-        Em suma, a população de cada setor foi comprimida para um único nó representativo do setor, e então a difusão foi aplicada para distribuir essa população pelos nós vizinhos na malha viária.
-        Esse processo foi repetido por um número determinado de iterações, resultando em uma distribuição mais realista da população ao longo da malha viária da cidade.
+        O grafo da cidade de São Carlos - SP foi obtido através do OpenStreetMap (OSM) utilizando a biblioteca OSMnx \cite{boeing2017osmnx} (ver \autoref{fig:grafo_Sao_Carlos} e \autoref{fig:grafo_Sao_carlos_detalhe}).
+        A população aproximada em cada nó foi estimada com base nos dados do censo demográfico do IBGE de 2022 \cite{ibge_malhas_setores2022}, estimados nos setores censitários (\autoref{fig:setores_censitarios}), em que foi utilizado o método de difusão de dados geográficos descrito na \autoref{sec:p-mediana}.
+        Em suma, a população de cada setor foi concentrada em um único nó representativo do setor, e então a difusão foi aplicada para distribuir essa população pelos nós vizinhos na malha viária.
+        Esse processo foi repetido por três iterações, com fator de retenção de $0.4$, resultando em uma distribuição mais realista da população ao longo da malha viária da cidade.
+
+        \begin{figure}[H]
+            \includegraphics[width=0.8\textwidth]{Grafo_Sao_Carlos.pdf}
+            \centering
+            \caption{Grafo da malha viária de São Carlos (Autoria própria)}
+            \label{fig:grafo_Sao_Carlos}
+        \end{figure}
+
+        \begin{figure}[H]
+            \includegraphics[width=\textwidth]{Grafo_Sao_carlos_Detalhe.pdf}
+            \centering
+            \caption{Grafo da malha viária de São Carlos, detalhe para o centro urbano (Autoria própria)}
+            \label{fig:grafo_Sao_carlos_detalhe}
+        \end{figure}
+        \begin{figure}[H]
+            \includegraphics[width=1.1\textwidth]{Populacao_setores_censitarios_detalhe.pdf}
+            \centering
+            \caption{Setores censitários de São Carlos (Autoria própria)}
+            \label{fig:setores_censitarios}
+        \end{figure}
+
 
     \section{Implementação Computacional} \label{sec:implementação}
 
-    A solução proposta foi implementada na linguagem de programação Python, utilizando um conjunto de bibliotecas especializadas em análise geoespacial e otimização matemática. O fluxo de trabalho foi dividido em cinco módulos sequenciais, permitindo a modularização do tratamento de dados e da resolução do problema.
+    A solução proposta foi implementada na linguagem de programação Python, com auxílio das LLMs Gemini \cite{gemini} e ChatGPT \cite{chatgpt}, utilizando um conjunto de bibliotecas especializadas em análise geoespacial e otimização matemática. O fluxo de trabalho foi dividido em cinco módulos sequenciais, permitindo a modularização do tratamento de dados e da resolução do problema.
 
-    Para a manipulação e visualização de dados geográficos, utilizou-se as bibliotecas \texttt{OSMnx} e \texttt{GeoPandas}, que permitem a extração da malha viária diretamente da plataforma OpenStreetMap e a manipulação de arquivos \textit{shapefile}. Para a construção da matriz de distâncias e operações em grafos, usa-se a biblioteca \texttt{NetworkX}, aplicando o algoritmo de Dijkstra para o cálculo de caminhos mínimos; pontua-se a tentativa de utilização do algoritmo de Floyd-Warshall, mas o mesmo mostrou-se muito ineficaz para este problema.
+    Para a manipulação e visualização de dados geográficos, utilizou-se as bibliotecas \texttt{OSMnx} e \texttt{GeoPandas}, que permitem a extração da malha viária diretamente da plataforma OpenStreetMap e a manipulação de arquivos \textit{shapefile}. Para a construção da matriz de distâncias e operações em grafos, utiliza-se a biblioteca \texttt{NetworkX}, aplicando o algoritmo de Dijkstra para o cálculo de caminhos mínimos; pontua-se a tentativa de utilização do algoritmo de Floyd-Warshall, mas o mesmo mostrou-se muito ineficaz para este problema.
 
-    A resolução do problema de otimização linear (conforme modelado na \autoref{subsec:pMP-linear}) foi realizada através da biblioteca \texttt{PuLP},com o metodo Simplex Dual que foi escolhido por apresentar desempenho superior ao Simplex Primal no nosso modelo, que possui muitas restrições (uma para cada par nó–candidato). Como mostrado por \cite{bixby2002solving}, implementações modernas do Simplex Dual tendem a superar o Primal em problemas grandes, altamente restritos e derivados de relaxações lineares, exatamente como o pMP. Na prática, o Simplex Primal mostrou-se muito mais lento, enquanto o Simplex Dual obteve soluções em tempo hábil.
+    A resolução do problema de otimização linear (conforme modelado na \autoref{subsec:pMP-linear}) foi realizada por meio da biblioteca \texttt{PuLP}, com o método Simplex Dual que foi escolhido por apresentar desempenho superior ao Simplex Primal no nosso modelo, que possui muitas restrições (uma para cada par nó–candidato). Como mostrado por \cite{bixby2002solving}, implementações modernas do Simplex Dual tendem a superar o Primal em problemas grandes, altamente restritos e derivados de relaxações lineares, exatamente como o pMP. Na prática, o Simplex Primal mostrou-se muito mais lento, enquanto o Simplex Dual obteve soluções em tempo hábil.
 
     \subsection{Estratégias de Resolução}
 
     Foram desenvolvidas duas abordagens para a resolução computacional do problema da p-mediana:
 
-    \begin{description}
-        \item[Abordagem Completa com Filtro de Candidatos (\texttt{5\_final.py}):] Nesta abordagem, todos os nós da malha viária como pontos de demanda potencial. No entanto, para reduzir o espaço de busca das variáveis de decisão $X_j$ (locais de instalação), aplica-se um filtro onde apenas nós com uma população mínima preestabelecida (ex: 200 habitantes) são considerados candidatos a receber um hospital.
-        
-        \item[Abordagem Simplificada (\texttt{5.1\_final\_simp.py}):] Visando eficiência computacional, esta estratégia reduz o grafo original apenas aos nós que possuem população estritamente positiva antes mesmo do processo de difusao. Estes nós atuam simultaneamente como pontos de demanda e únicos locais candidatos. Isso reduz drasticamente a dimensão da matriz de distâncias e o número de restrições do modelo linear.
-    \end{description}
+        \begin{itemize}
+            \item \textbf{Abordagem Completa com Filtro de Candidatos (\texttt{5\_final.py}):} Nesta abordagem, todos os nós da malha viária atuam como pontos de demanda. No entanto, para reduzir o espaço de busca das variáveis de decisão $X_j$ (locais de instalação), aplica-se um filtro onde apenas nós com uma população mínima preestabelecida (ex: 200 habitantes) são considerados candidatos a receber um hospital.
+            
+            \item \textbf{Abordagem Simplificada (\texttt{5.1\_final\_simp.py}):} Visando eficiência computacional, esta estratégia reduz o grafo original apenas aos nós que possuem população estritamente positiva antes mesmo do processo de difusão. Estes nós atuam simultaneamente como pontos de demanda e únicos locais candidatos. Isso reduz drasticamente a dimensão da matriz de distâncias e o número de restrições do modelo linear.
+        \end{itemize}
 
     \subsection{Roteiro de Execução e Dados}
 
@@ -252,12 +273,21 @@
             \item O script cruza os dados geométricos com a tabela de população e projeta os centroides para a malha viária.
         \end{itemize}
         
-        \item \textbf{Difusão Populacional (\texttt{3\_difusao.py}):} Aplica o algoritmo de suavização como descrito na \autoref{sec:difusao} para distribuir a população dos nós para seus vizinhos.
+        \item \textbf{Difusão Populacional (\texttt{3\_difusao.py}):} Aplica o algoritmo de suavização como descrito na \autoref{sec:difusao} para distribuir a população dos nós para seus vizinhos. Com isso, obtemos a população suavizada no grafo, como pode ser visto na \autoref{fig:populacao_suavizada}, além dos pontos em que $p \ge 200$, ou seja, os pontos passíveis de construir um hospital.
+
+        \begin{figure}[H]
+            \includegraphics[width=\textwidth]{Populacao_Suavizada.pdf}
+            \centering
+            \caption{População suavizada na malha viária de São Carlos (Autoria própria)}
+            \label{fig:populacao_suavizada}
+        \end{figure}
         
         \item \textbf{Pré-cálculo de Distâncias (\texttt{4\_distancias.py}):} Dada a complexidade computacional do cálculo de caminhos mínimos em grafos urbanos, este script foi criado para executar o algoritmo de Dijkstra para todos os pares de nós ($O(V \cdot E \log V)$) uma única vez. O resultado é uma matriz de distâncias persistida em disco (arquivo .pkl), permitindo que as otimizações subsequentes sejam executadas rapidamente sem recalcular rotas.
         
         \item \textbf{Otimização (\texttt{5\_final.py} ou \texttt{5.1\_final\_simp.py}):} Carrega o grafo, a população e a matriz de distâncias pré-calculada. Resolve o problema linear via Simplex Dual e exporta os mapas e tabelas de resultados, permitindo testar diferentes valores de $p$ (número de hospitais).
     \end{enumerate}
+
+    Para a execução completa do fluxo, é recomendável utilizar uma máquina com pelo menos 8 GB de RAM.
 
     \chapter{Resultados}
     \thispagestyle{plain}

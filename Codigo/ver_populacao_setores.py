@@ -81,6 +81,10 @@ def gerar_mapa_coropletico_sao_carlos():
     # Configurações finais do gráfico
     ax.set_title('População por Setor Censitário em São Carlos (Censo 2022)', fontsize=16)
     ax.set_axis_off() # Remove os eixos X e Y para um visual mais limpo
+    try:
+        ax.set_box_aspect(1)  # Matplotlib >= 3.3
+    except Exception:
+        ax.set_aspect('equal', adjustable='box')
 
     print("✅ Visualização pronta! A mostrar o mapa...")
     plt.show()

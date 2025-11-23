@@ -1,6 +1,9 @@
 #Ignore Cache created by 1_grafo.py
 cache/
 
+#Ignore the distance matrix pickle file (can be regenerated with 4_distancias.py and takes 1GB of space)
+matriz_distancias.pkl
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
