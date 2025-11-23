@@ -145,7 +145,7 @@ if __name__ == "__main__":
     populacoes_filtradas = {node: pop for node, pop in populacoes.items() if node in G.nodes()}
 
     # --- PARÂMETROS ---
-    NUMERO_DE_HOSPITAIS = 7
+    NUMERO_DE_HOSPITAIS = 9
     POPULACAO_MINIMA_CANDIDATO = 200 
 
     # --- PROCESSAMENTO ---
