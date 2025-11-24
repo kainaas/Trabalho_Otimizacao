@@ -348,8 +348,16 @@
             \end{figure}
         \end{enumerate}
 
-        Por fim é possível afirmar que esta solução, apesar de não ter uma precisão perfeita produz resultados muito bons e serve também para indicar quais áreas dentro da cidade de São Carlos demandam por hospitais.
-        Pois é evidente que dado um $p$ pequeno, acabaremos com resultados menos precisos porém que reforçam a importância de um hospital na região, por isso que no caso de $p = 5$ visto na \autoref{fig:caso_5} não há nenhum Erro, mas sim acertos e semiacertos, o que mostra que nossa solução está condizente com a realidade além de se manter consistente para diferentes valores de $p$.
+        Por fim é possível afirmar que esta solução, apesar de não ter uma precisão perfeita produz resultados muito bons e serve também para indicar quais áreas dentro da cidade de São Carlos demandam por hospitais. Seguindo a tendência desse resultados, pode-se ver que as áreas mais ao norte da cidade não são bem tão bem representadas com relação à presença de hospitais, o que sugere que a construção de novos hospitais nessa região poderia ser benéfica para a população local.
+
+        É evidente que dado um $p$ pequeno, acabaremos com resultados menos precisos porém que reforçam a importância de um hospital na região, por isso que no caso de $p = 5$ visto na \autoref{fig:caso_5} não há nenhum Erro, mas sim acertos e semiacertos, o que mostra que nossa solução está condizente com a realidade além de se manter consistente para diferentes valores de $p$.
+        
+        \section{Discussão}
+        É importante ressaltar que, apesar dos bons resultados obtidos, o modelo apresenta algumas limitações que podem impactar a precisão das soluções propostas. A simplificação do grafo para um modelo não direcionado, embora tenha facilitado o cálculo das distâncias, pode ter introduzido imprecisões, especialmente em áreas onde o tráfego é unidirecional ou onde existem barreiras físicas que afetam o acesso aos hospitais. Além disso, a escolha do limiar populacional $p_0$ para definir os nós candidatos a receber hospitais pode ter excluído locais que, apesar de terem uma população menor, são estrategicamente importantes devido à sua localização geográfica ou acessibilidade.
+
+        Note que, também, os dados do IBGE mostram a população residente, mas não consideram fatores como o fluxo diário de pessoas que podem necessitar de serviços hospitalares, como trabalhadores e estudantes que se deslocam para a cidade. Esses fatores podem influenciar significativamente a demanda por serviços de saúde em determinadas áreas, como no centro, que não apresenta quase nenhum residente, mas é uma das áreas com mais pessoas diariamente. Além disso, o modelo não leva em conta a capacidade dos hospitais existentes, o que pode ser um fator crucial na determinação da necessidade de novas instalações. Hospitais com alta demanda podem justificar a construção de novos hospitais nas proximidades, mesmo que a população local não seja tão alta.
+
+        O resultado mais expressivo do modelo foi observado no caso com $p = 9$, que correponde a um número maior de hospitais do que o atualmente existente na cidade. Nesse cenário, o modelo conseguiu identificar locais que não apenas minimizam as distâncias para a população, mas também sugerem áreas que poderiam se beneficiar de novas instalações hospitalares. Isso indica que o modelo pode ser uma ferramenta útil para planejamento urbano e alocação de recursos de saúde, especialmente em cidades em crescimento ou com distribuição populacional desigual.
 
 
     \chapter{Conclusão}
