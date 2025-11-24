@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREAMBLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 1. Load 'Universal' Toolkit (Project-Agnostic)
-\input{preambulo.tex}
+\input{zpreambulo.tex}
 
 \addbibresource{Otimizacao-bib-relatorio.bib}
 \graphicspath{ {./imagens/} }
@@ -282,7 +282,7 @@
             \label{fig:populacao_suavizada}
         \end{figure}
         
-        \item \textbf{Pré-cálculo de Distâncias (\texttt{4\_distancias.py}):} Dada a complexidade computacional do cálculo de caminhos mínimos em grafos urbanos, este script foi criado para executar o algoritmo de Dijkstra para todos os pares de nós ($O(V \cdot E \log V)$) uma única vez. O resultado é uma matriz de distâncias persistida em disco (arquivo .pkl), permitindo que as otimizações subsequentes sejam executadas rapidamente sem recalcular rotas.
+        \item \textbf{Pré-cálculo de Distâncias (\texttt{4\_distancias.py}):} Dada a complexidade computacional do cálculo de caminhos mínimos em grafos urbanos, este script foi criado para executar o algoritmo de Dijkstra para todos os pares de nós ($O(V \cdot E \log V)$) uma única vez. O resultado é uma matriz de distâncias persistida em disco (arquivo .pkl), permitindo que as otimizações subsequentes sejam executadas rapidamente sem recalcular rotasi, também vale resaltar que nosso grafo foi transformado em um grafo não-direcionado, simplificando muito o cálculo de caminhos entre dois pontos.
         
         \item \textbf{Otimização (\texttt{5\_final.py} ou \texttt{5.1\_final\_simp.py}):} Carrega o grafo, a população e a matriz de distâncias pré-calculada. Resolve o problema linear via Simplex Dual e exporta os mapas e tabelas de resultados, permitindo testar diferentes valores de $p$ (número de hospitais).
     \end{enumerate}
@@ -291,10 +291,74 @@
 
     \chapter{Resultados}
     \thispagestyle{plain}
+    \section{Análise e Desempenho}
+        Com fins de realizar uma boa análise, executamos o código \texttt{5\_final.py} variando o número de hospitais desejados, com o intuito de ver as semelhanças e diferenças entre cada caso.
+        Para analisar o quão bom é cada caso, usaremos o seguinte críterio:
+        \begin{itemize}
+            \item \textbf{Acerto:} Quando o local proposto estiver suficientemente próximo a um hospital real;
+            \item \textbf{Semi-Acerto:} Quando o local proposto está na mesma região de um hospital mas não está proximo o suficiente para ser considerado um acerto;
+            \item \textbf{Erro:} Quando não há nenhum hospital proximo o suficiente. Note que casos assim indicam uma sugestão de construção futura de hospitais, visto que teoricamente há necessidade de um hospital nessa região;
+        \end{itemize}
+
+        \noindent
+        Com o intuito de permitir a classificação de nossos resultados, o seguinte mapeamento dos hospitais de São Carlos foi usado para as seguintes analises:
+        \begin{figure}[H]
+            \includegraphics[width=\textwidth*3/5]{hospitais.png}
+            \centering
+            \caption{Mapa dos Hospitais de São Carlos (Autoria própria)}
+            \label{fig:hospitais}
+        \end{figure}
+
+        \noindent
+        Portanto, temos então os 4 casos, sendo estes:
+        \begin{enumerate}
+            \item \textbf{Caso $p = 5$:} Para acharmos os locais ideias de 5 hospitais, foi necessário 2388.86 segundos, sendo o segundo caso mais rápido. Aqui obtivemos 40\% de acertos e 60\% de semiacertos, sendo que todos os acertos foram nas zonas mais densas da cidade e os semiacertos concentrados no norte, note também que como temos um número muito pequeno de hospitais desejados, a região central da cidade, que é uma zona comercial, acabou ficando sem hospitais, devido a sua baixa densidade populacional e o fato dos outros hospitais estarem distribuidos de forma que a distancia do centro até o hospital mais próximo não seja muito grande.
+            \begin{figure}[H]
+                \includegraphics[width=\textwidth/2]{caso_5.png}
+                \centering
+                \caption{Resultado gerado pelo arquivo \texttt{5\_final.py} para $p = 5$}
+                \label{fig:caso_5}
+            \end{figure}
+
+            \item \textbf{Caso $p = 7$:} Nesse caso, tivemos a uma performance surprendemente boa, sendo necessário apenas 1384.23 segundos. Temos como hipotese que, devido a distribuição dos pontos candidatos visto em \autoref{fig:populacao_suavizada} é provável que teremos 7 núcleos, o que reduz em muito o número de iterações do método. 
+            Obtivemos 3 acertos, 2 erros e 2 semiacertos. Note que, do caso 5 para o caso 7 ganhamos um acerto a mais na região centro-sul da cidade, o que reforça cada vez o impacto da distribuição demográfica da cidade.
+            \begin{figure}[H]
+                \includegraphics[width=\textwidth/2]{caso_7.png}
+                \centering
+                \caption{Resultado gerado pelo arquivo \texttt{5\_final.py} para $p = 7$}
+                \label{fig:caso_7}
+            \end{figure}
+
+            \item \textbf{Caso $p = 8$:} São Carlos atualmente tem 8 hospitais, então com o intuito de descobrir o quão efetivo é nosso modelo, foi necessário 8836.57 segundos.
+            Como é possível ver na imagem abaixo, obtivemos 50\% de acertos, 12.5\% de semiacertos e 37.5\% de erros, sendo este um bom resultado, tendo em vista as diversas adaptações necessárias para a simplificação do problema que deve acabar interferindo no resultado final.
+            Sendo uma dessas adaptações, mostrada na \autoref{fig:populacao_suavizada}, os locais candidatos a serem hospitais estão quase que concentrados na região sudoeste da cidade, perto do Aracy, onde conseguimos ver uma grande taxa de acerto na maioria dos casos analisados, o que sugere que de fato, muitos hospitais em São Carlos foram localizados com a intenção de reduzir distâncias entre o povo e os hospitais. Porém, devido a essa concentração demográfica, o nosso modelo acaba ficando um pouco mais falho quanto mais perto do centro e norte da cidade estamos, o que acaba sendo resolvido em parte ao aumentar o número de hospitais, pois uma vez que a necessidade da densa região do sudeste é saciada, a atenção acaba se voltando justamente ao noroeste e centro-oeste de São Carlos, as regiões com menos taxa de acertos.
+            \begin{figure}[H]
+                \includegraphics[width=\textwidth/2]{caso_8.png}
+                \centering
+                \caption{Resultado gerado pelo arquivo \texttt{5\_final.py} para $p = 8$}
+                \label{fig:caso_8}
+            \end{figure}
+
+            \item \textbf{Caso $p = 9$:} Nosso caso com maior número de acertos, foi necessário 3958.15 segundos para o código terminar de rodar e é notável como o aumento do número de hospitais desejados influencia na visibilidade do centro da cidade. Também é interessante, novamente notar que a região perto do Aracy manteve, em todas as iterações realizadas, pelo menos 2 acertos, o que evidencia novamente a alta concentração populacional dessa área.
+            \begin{figure}[H]
+                \includegraphics[width=\textwidth/2]{caso_9.png}
+                \centering
+                \caption{Resultado gerado pelo arquivo \texttt{5\_final.py} para $p = 9$}
+                \label{fig:caso_9}
+            \end{figure}
+        \end{enumerate}
+
+        Por fim é possível afirmar que esta solução, apesar de não ter uma precisão perfeita produz resultados muito bons e serve também para indicar quais áreas dentro da cidade de São Carlos demandam por hospitais.
+        Pois é evidente que dado um $p$ pequeno, acabaremos com resultados menos precisos porém que reforçam a importância de um hospital na região, por isso que no caso de $p = 5$ visto na \autoref{fig:caso_5} não há nenhum Erro, mas sim acertos e semiacertos, o que mostra que nossa solução está condizente com a realidade além de se manter consistente para diferentes valores de $p$.
+
 
     \chapter{Conclusão}
     \thispagestyle{plain}
+        Em suma, foi possível reformular o pMP, um problema de otimização combinatória, para um problema de otimização linear utilizando o método da relaxação. Os dados foram retirados do OpenStreetMap e do IBGE, possibilitando a modelagem do problema na escala municipal. Com isso, foi aplicado o Simplex Dual para a resolução, implementado na biblioteca PuLP do Python.
 
+        A relaxação para o problema da p-mediana se mostrou como uma boa alternativa, considerando a alocação de hospitais em São Carlos, para reduzir a complexidade do problema. Porém, ainda foi necessário lidar com algo computacionalmente pesado, considerando que havia uma grande quantidade de vértices no grafo da cidade e diversos parâmetros e variáveis no problema relaxado.
+
+        Algumas simplificações ,como tornar o grafo da cidade para não direcionado e  reduzir a quantidade de nós candidatos para receber um hospital, foram feitas para ser possível computar soluções em tempo hábil para computadores domésticos e usando a linguagem Python. Apesar disso, os resultados obtidos sobre a localização de hospitais apresentam grande semelhanças com as localizações reais dessas construções na cidade.
 
     % --- BIBLIOGRAPHY ---
     \printbibliography
